@@ -16,9 +16,10 @@ function useForm({ initialValues, onSubmit, validate }){
         console.log('handleSubmit 시작')
         setSubmitting(true)
         event.preventDefault()
+        //setErrors(validate(values))
         await new Promise((r) => { 
             setTimeout(r, 500) 
-        }) //<-이부분 문법 공부필요
+        }) //<-이부분 문법 공부필요        
         setErrors(validate(values))
         console.log('handleSubmit 종료')
     }
