@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
     List<Todo> findByTodoDate(String todoDate);
+
+    Todo findByTodoToken(String todoToken);
 }

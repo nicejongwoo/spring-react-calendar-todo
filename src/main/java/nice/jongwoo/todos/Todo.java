@@ -39,5 +39,13 @@ public class Todo {
         this.todoDate = todoDate;
         this.done = false;
     }
+
+    public void changeOnTrue() {
+        this.done = true;
+    }
+
+    public void changeOnFalse() {
+        this.done = false;
+    }
 }
 
