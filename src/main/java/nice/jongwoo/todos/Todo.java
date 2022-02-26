@@ -47,5 +47,11 @@ public class Todo {
     public void changeOnFalse() {
         this.done = false;
     }
+
+    public Todo edit(String title, String todoDate) {
+        this.title = title;
+        this.todoDate = todoDate;
+        return this;
+    }
 }
 
