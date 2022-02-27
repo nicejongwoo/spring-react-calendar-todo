@@ -49,10 +49,10 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public Todo editTodo(Todo todo, String todoToken) {
         Todo savedTodo = todoRepository.findByTodoToken(todoToken).orElseThrow(RuntimeException::new);
-        Todo modifyTodo = savedTodo.edit(todo.getTitle(), todo.getTodoDate());
+        savedTodo.edit(todo.getTitle(), todo.getTodoDate());
 
-        todoRepository.save(modifyTodo);
-        return modifyTodo;
+        todoRepository.save(savedTodo);
+        return savedTodo;
     }
 
     @Override
