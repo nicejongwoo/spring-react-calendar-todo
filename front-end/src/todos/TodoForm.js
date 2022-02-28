@@ -16,15 +16,15 @@ const override = css`
   border-color: #36d7b7;
 `;
 
-function TodoForm() {
-    const [color, setColor] = useState('#fff')
-
-
+function TodoForm(props) {
+    const [ color, setColor ] = useState('#fff')
+    
     const { values, errors, submitting, handleChange, handleSubmit } = useForm({
         initialValues: { title: '', todoDate: '' },
         onSubmit: (values) => {
             createTodo(values).then((response) => {
                 toast.success(response.message)
+                props.setLoading(true)
             });
         },
         validate,
@@ -61,7 +61,7 @@ function TodoForm() {
             <Alert/>
 
             <ClipLoader color={color} loading={submitting} css={override} size={30} />
-            {submitting ? console.log('보내는 중') : console.log('완료')}
+            {/* {submitting ? console.log('보내는 중') : console.log('완료')} */}
         </form>
     )
 }

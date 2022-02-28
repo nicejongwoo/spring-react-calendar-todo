@@ -20,7 +20,6 @@ const request = (options) => {
     })
 }
 
-
 export function createTodo(todoData) {
     return request({
         headers: headers,
@@ -32,4 +31,20 @@ export function createTodo(todoData) {
     //     console.log('response::', response);
     //     //toast(response.message)
     // })
+}
+
+export function getTodoListByTodoDate(todoDate) {
+    return request({
+        headers: headers,
+        url: API_BASE_URL + '/' + todoDate,
+        method: 'GET',
+    })
+}
+
+export function getTodoListMonthly(startDate, endDate) {
+    return request({
+        headers: headers,
+        url: API_BASE_URL + '?startDate=' + startDate + '&endDate=' + endDate,
+        method: 'GET',        
+    })
 }

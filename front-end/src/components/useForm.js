@@ -13,7 +13,7 @@ function useForm({ initialValues, onSubmit, validate }){
     }
 
     const handleSubmit = async (event) => {
-        console.log('handleSubmit 시작')
+        // console.log('handleSubmit 시작')
         setSubmitting(true)
         event.preventDefault()
         //setErrors(validate(values))
@@ -21,12 +21,12 @@ function useForm({ initialValues, onSubmit, validate }){
             setTimeout(r, 500) 
         }) //<-이부분 문법 공부필요        
         setErrors(validate(values))
-        console.log('handleSubmit 종료')
+        // console.log('handleSubmit 종료')
     }
 
     useEffect(() => { //<-이부분 문법 공부필요
         if(submitting) {
-            console.log('Object.keys(errors):: ', Object.keys(errors))
+            // console.log('Object.keys(errors):: ', Object.keys(errors))
             if(Object.keys(errors).length === 0) { // Object.key()<-이부분 문법 공부필요
                 onSubmit(values)
             }
