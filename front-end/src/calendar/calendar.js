@@ -20,11 +20,13 @@ const Calendar = (props) => {
     const prevMonth = () => {
         setCurrrentDate(subMonths(currentDate, 1))
         setLoading(true)
+        console.log('prevMonth')
     }
 
     const nextMonth = () => {
         setCurrrentDate(addMonths(currentDate, 1))
         setLoading(true)
+        console.log('nextMonth')
     }
 
     const getTodoList = (loading) => {
@@ -32,19 +34,24 @@ const Calendar = (props) => {
         const formattedStartDate = format(monthStart, dateFormat)
         const formattedEndDate = format(monthEnd, dateFormat)
 
-        if(loading || props.loading) {
+        console.log('getTodoList')
+
+        if(loading) {
             getTodoListMonthly(formattedStartDate, formattedEndDate).then((response) => {
                 // console.log('response:: ', response)
                 setTodos(response.todos)
             })
             setLoading(false)
-            props.setLoading(false)
         }        
     }
 
     useEffect(() => {
-        getTodoList(loading)
-    }, [])
+        console.log('useEffect')
+        if(loading || props.loading){
+            const isLoading = true
+            getTodoList(true)
+        }        
+    }, [loading, props.loading])
 
     const header = () => {
         const dateFormat = 'yyyy-MM';
@@ -105,8 +112,6 @@ const Calendar = (props) => {
         let todoByDate = {} //날짜를 key값으로 가지는 object
         let arrTodoTitle = [] //key값의 value를 배열로 등록(중복된 날짜의 value값 처리를 위해서)
 
-        getTodoList(loading)
-
         {todos.map((item, index) => {            
             let todoDateDay = item.todoDate.slice(8, item.todoDate.length)
             arrTodoTitle.push(item.title)
@@ -118,7 +123,7 @@ const Calendar = (props) => {
             arrTodoTitle = []
         })}
         // console.log('todoByDate: ', todoByDate)
-
+        
         let lis = []
 
         while(day <= endDate) {
