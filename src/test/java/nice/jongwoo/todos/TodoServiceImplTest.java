@@ -60,6 +60,19 @@ class TodoServiceImplTest {
     }
 
 
+    @DisplayName("service test: 선택된 달에 해당하는 투두 목록 조회")
+    @Test
+    void givenTodoList_whenFindAllByMonthly_thenTodoListSelectedMonth() {
+        //given - precondition ro setup
+        given(todoRepository.findAllByTodoDateBetweenStartDateAndEndDate("2022-01-01", "2022-01-31")).willReturn(List.of(todo, todo2));
+
+        //when - action or the behaviour that we are going test
+        List<Todo> todoList = todoService.findAllMonthly("2022-01-01", "2022-01-31");
+
+        //then - verify the output
+        assertThat(todoList.size()).isEqualTo(2);
+    }
+
     @DisplayName("service test: 선택된 날짜에 해당하는 투두 목록 조회")
     @Test
     void givenTodoList_whenFindAllByTodoDate_thenTodoListSelectedDate() {

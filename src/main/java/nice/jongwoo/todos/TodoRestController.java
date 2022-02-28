@@ -34,6 +34,17 @@ public class TodoRestController {
     }
 
     //R
+    @GetMapping
+    public ResponseEntity<?> getTodoListMonthly(@RequestParam String startDate,
+                                                @RequestParam String endDate) {
+        List<Todo> todoList = todoFacade.findAllMonthly(startDate, endDate);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "success");
+        response.put("todos", todoList);
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/{todoDate}")
     public ResponseEntity<?> getTodoListBySelectedDate(@PathVariable String todoDate) {
         List<Todo> todoList = todoFacade.findByTodoDate(todoDate);
@@ -75,8 +86,8 @@ public class TodoRestController {
 
     @PutMapping("/todo/{todoToken}")
     public ResponseEntity<?> editTodo(@PathVariable String todoToken, @RequestBody @Valid TodoRequest todoRequest) {
-        todoRequest.setTitle("modify");
-        todoRequest.setTodoDate("2022-12-30");
+        todoRequest.setTitle(todoRequest.getTitle());
+        todoRequest.setTodoDate(todoRequest.getTodoDate());
         Todo modifyTodo = TodoRequest.toEntity(todoRequest);
 
         Todo modifiedTodo = todoFacade.editTodo(modifyTodo, todoToken);

@@ -42,4 +42,8 @@ public class TodoFacade {
     public void removeTodo(String todoToken) {
         todoService.deleteByTodoToken(todoToken);
     }
+
+    public List<Todo> findAllMonthly(String startDate, String endDate) {
+        return todoService.findAllMonthly(startDate, endDate);
+    }
 }

@@ -36,6 +36,40 @@ class TodoRepositoryTest {
         assertThat(savedTodo.getId()).isGreaterThan(0);
     }
 
+    @DisplayName("repository test: 선택된 달에 해당하는 투두 목록 조회")
+    @Test
+    void givenTodoList_whenFindAllMonthly_thenTodoListSelectedMonth(){
+        //given - precondition ro setup
+        String todoDate = "2022-01-31";
+        Todo todo1 = Todo.builder()
+            .title("test todo1")
+            .todoDate(todoDate)
+            .build();
+
+        Todo todo2 = Todo.builder()
+            .title("test todo2")
+            .todoDate(todoDate)
+            .build();
+
+        Todo todo3 = Todo.builder()
+            .title("test todo3")
+            .todoDate("2022-02-01")
+            .build();
+
+        todoRepository.save(todo1);
+        todoRepository.save(todo2);
+        todoRepository.save(todo3);
+
+        //when - action or the behaviour that we are going test
+        String startDate = "2022-01-01";
+        String endDate = "2022-01-31";
+        List<Todo> todoList = todoRepository.findAllByTodoDateBetweenStartDateAndEndDate(startDate, endDate);
+
+        //then - verify the output
+        assertThat(todoList).isNotNull();
+        assertThat(todoList.size()).isEqualTo(2);
+    }
+
     @DisplayName("repository test: 선택된 날짜에 해당하는 투두 목록 조회")
     @Test
     void givenTodoList_whenFindAllByTodoDate_thenTodoListSelectedDate(){

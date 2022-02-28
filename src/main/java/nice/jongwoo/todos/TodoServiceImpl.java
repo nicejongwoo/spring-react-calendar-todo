@@ -60,4 +60,9 @@ public class TodoServiceImpl implements TodoService {
         Todo savedTodo = todoRepository.findByTodoToken(todoToken).orElseThrow(RuntimeException::new);
         todoRepository.delete(savedTodo);
     }
+
+    @Override
+    public List<Todo> findAllMonthly(String startDate, String endDate) {
+        return todoRepository.findAllByTodoDateBetweenStartDateAndEndDate(startDate, endDate);
+    }
 }

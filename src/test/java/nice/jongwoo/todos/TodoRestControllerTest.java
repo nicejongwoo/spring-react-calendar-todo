@@ -38,7 +38,7 @@ class TodoRestControllerTest {
     private ObjectMapper objectMapper;
 
     private final String TITLE = "test";
-    private final String TODO_DATE = "2022-01-31";
+    private final String TODO_DATE_2022_01_31 = "2022-01-31";
 
     @DisplayName("controller test: 투두 등록")
     @Test
@@ -46,7 +46,7 @@ class TodoRestControllerTest {
         //given - precondition ro setup
         Todo todo = Todo.builder()
             .title(TITLE)
-            .todoDate(TODO_DATE)
+            .todoDate(TODO_DATE_2022_01_31)
             .build();
 
         given(todoFacade.registerTodo(any())).willReturn(todo.getTodoToken());
@@ -64,17 +64,36 @@ class TodoRestControllerTest {
         ;
     }
 
+    @DisplayName("controller test: 선택된 달에 해당하는 투두 목록 조회")
+    @Test
+    void givenTodoList_whenFindAllByMonthly_thenTodoListSelectedMonth() throws Exception {
+        //given - precondition ro setup
+        List<Todo> todoList = new ArrayList<>();
+        todoList.add(Todo.builder().title("test1").todoDate(TODO_DATE_2022_01_31).build());
+        todoList.add(Todo.builder().title("test2").todoDate(TODO_DATE_2022_01_31).build());
+        given(todoFacade.findAllMonthly("2022-01-01", "2022-01-31")).willReturn(todoList);
+
+        //when - action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/api/v1/todos?startDate=2022-01-31&endDate=2022-01-31"));
+
+        //then - verify the output
+        response.andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.size()", is(todoList.size())))
+        ;
+    }
+
     @DisplayName("controller test: 선택된 날짜에 해당하는 투두 목록 조회")
     @Test
     void givenTodoList_whenFindAllByTodoDate_thenTodoListSelectedDate() throws Exception {
         //given - precondition ro setup
         List<Todo> todoList = new ArrayList<>();
-        todoList.add(Todo.builder().title("test1").todoDate(TODO_DATE).build());
-        todoList.add(Todo.builder().title("test2").todoDate(TODO_DATE).build());
-        given(todoFacade.findByTodoDate(TODO_DATE)).willReturn(todoList);
+        todoList.add(Todo.builder().title("test1").todoDate(TODO_DATE_2022_01_31).build());
+        todoList.add(Todo.builder().title("test2").todoDate(TODO_DATE_2022_01_31).build());
+        given(todoFacade.findByTodoDate(TODO_DATE_2022_01_31)).willReturn(todoList);
 
         //when - action or the behaviour that we are going test
-        ResultActions response = mockMvc.perform(get("/api/v1/todos/{todoDate}", TODO_DATE));
+        ResultActions response = mockMvc.perform(get("/api/v1/todos/{todoDate}", TODO_DATE_2022_01_31));
 
         //then - verify the output
         response.andDo(print())
@@ -87,7 +106,7 @@ class TodoRestControllerTest {
     @Test
     void givenTodo_whenFindByTodoToken_thenTodo() throws Exception {
         //given - precondition ro setup
-        Todo todo = Todo.builder().title("test").todoDate(TODO_DATE).build();
+        Todo todo = Todo.builder().title("test").todoDate(TODO_DATE_2022_01_31).build();
         given(todoFacade.findByTodoToken(todo.getTodoToken())).willReturn(todo);
 
         //when - action or the behaviour that we are going test
@@ -97,7 +116,7 @@ class TodoRestControllerTest {
         response.andDo(print())
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.title", is("test")))
-            .andExpect(jsonPath("$.todoDate", is(TODO_DATE)))
+            .andExpect(jsonPath("$.todoDate", is(TODO_DATE_2022_01_31)))
             .andExpect(jsonPath("$.message", is("success")))
         ;
     }
@@ -106,7 +125,7 @@ class TodoRestControllerTest {
     @Test
     void givenTodoObject_whenChangeOnTrue_thenUpdateDoneTrue() throws Exception {
         //given - precondition ro setup
-        Todo todo = Todo.builder().title("test").todoDate(TODO_DATE).build();
+        Todo todo = Todo.builder().title("test").todoDate(TODO_DATE_2022_01_31).build();
 
         //when - action or the behaviour that we are going test
         ResultActions response = mockMvc.perform(put("/api/v1/todos/todo/{todoToken}/done", todo.getTodoToken()));
@@ -122,7 +141,7 @@ class TodoRestControllerTest {
     @Test
     void givenTodoObject_whenChangeOnFalse_thenUpdateDoneFalse() throws Exception {
         //given - precondition ro setup
-        Todo todo = Todo.builder().title("test").todoDate(TODO_DATE).build();
+        Todo todo = Todo.builder().title("test").todoDate(TODO_DATE_2022_01_31).build();
 
         //when - action or the behaviour that we are going test
         ResultActions response = mockMvc.perform(put("/api/v1/todos/todo/{todoToken}/undone", todo.getTodoToken()));
@@ -138,7 +157,7 @@ class TodoRestControllerTest {
     @Test
     void givenTodoObject_whenEditTodo_thenUpdatedTodo() throws Exception {
         //given - precondition ro setup
-        Todo todo = Todo.builder().title("test").todoDate(TODO_DATE).build();
+        Todo todo = Todo.builder().title("test").todoDate(TODO_DATE_2022_01_31).build();
 
         TodoRequest request = new TodoRequest();
         request.setTitle("modify");
@@ -162,7 +181,7 @@ class TodoRestControllerTest {
     @Test
     void givenTodoObject_whenDelete_thenRemoveTodo() throws Exception {
         //given - precondition ro setup
-        Todo todo = Todo.builder().title("test").todoDate(TODO_DATE).build();
+        Todo todo = Todo.builder().title("test").todoDate(TODO_DATE_2022_01_31).build();
 //        given(todoFacade.findByTodoToken(todo.getTodoToken())).willReturn(todo);
 
         //when - action or the behaviour that we are going test
