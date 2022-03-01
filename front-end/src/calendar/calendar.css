@@ -55,7 +55,7 @@ header {
 .calendar {
     display: block;
     position: relative;
-    width: 90%;
+    width: 100%;
     background: white;
     border: 1px solid lightgray;
     height: auto;
@@ -99,14 +99,15 @@ header {
     cursor: pointer;
     background: white;
     transition: 0.25s ease-out;
+    padding: 0;
 }
 .calendar .body .cell:hover {
     background: whitesmoke;
     transition: 0.5s ease-out;
 }
 .calendar .body .selected {
-    border-left: 10px solid transparent;
-    border-image: linear-gradient(45deg, #1affa0 0%,#cff153 40%);
+    /* border-left: 10px solid transparent; */
+    /* border-image: linear-gradient(45deg, #1affa0 0%,#cff153 40%); */
     border-image-slice: 1;
 }
 .calendar .body .row {
@@ -118,12 +119,18 @@ header {
 .calendar .body .cell:last-child {
     border-right: none;
 }
+
+.calendar .body .cell .day-top {
+    display: flex;
+    flex-direction: row-reverse;
+}
 .calendar .body .cell .number {
-    position: absolute;
+    position: relative;
     font-size: 82.5%;
     line-height: 1;
-    top: .75em;
-    right: .75em;
+    /* top: .75em;
+    right: .75em; */
+    padding: .5em;
     font-weight: 700;
 }
 .calendar .body .cell:hover .number, .calendar .body .selected .number   {
@@ -136,21 +143,64 @@ header {
 .calendar .body .cell .bg {
     font-weight: 700;
     line-height: 1;
-    color: #1affa0;
+    color: #f1d653;
     opacity: 0;
-    font-size: 5em;
+    font-size: 2em;
     position: absolute;
-    top: -.2em;
-    right: -.05em;
+    top: .05em;
+    right: .1em;
     transition: .25s ease-out;
     letter-spacing: -.07em;
 }
 .calendar .body .cell:hover .bg, .calendar .body .selected .bg  {
-    opacity: 0.2;
-    transition: .5s ease-in;
+    opacity: 0.5;
+    transition: .15s ease-in;
 }
+
+.calendar .body .cell .day-body {
+    display: flex;
+    /* flex-direction: row-reverse; */
+}
+.calendar .body .contents {
+    position: relative;
+    /* top: 2em; */
+    left: 0em;
+    list-style:none;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.calendar .body .contents li {
+    position: relative;
+    width: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+/*
 .calendar .body .column {
     flex-grow: 0;
     flex-basis: calc(100%/7);
     width: calc(100%/7);
 }
+
+.calendar .body .contents {
+    position: absolute;
+    top: 2em;
+    left: 0em;
+    list-style:none;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+}
+
+.calendar .body .contents li {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+*/

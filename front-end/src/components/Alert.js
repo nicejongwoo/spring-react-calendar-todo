@@ -2,9 +2,9 @@ import { ToastContainer } from "react-toastify";
 
 export default function Alert() {
     return (
-        <ToastContainer 
+        <ToastContainer
             position="bottom-left"
-            hideProgressBar={true}
+            hideProgressBar={false}
             autoClose={3000}
             newestOnTop={false}
             rtl={false}

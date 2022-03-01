@@ -1,5 +1,5 @@
-import { addDays, addMonths, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, startOfMonth, startOfWeek, subMonths } from 'date-fns'
-import { useEffect, useState } from 'react'
+import { addDays, addMonths, endOfMonth, endOfWeek, format, getDay, isSameDay, isSameMonth, startOfMonth, startOfWeek, subMonths } from 'date-fns'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import { getTodoListMonthly } from '../todos/TodoService'
 
 import './calendar.css'
@@ -7,13 +7,13 @@ import './calendar.css'
 const Calendar = (props) => {
 
     const [ currentDate, setCurrrentDate ] = useState(new Date())
-    const [ selectedDate, setSelectedDate ] = useState(new Date())    
+    const [ selectedDate, setSelectedDate ] = useState(new Date())
     const [ todos, setTodos ] = useState([
         // { title: "test1", todoDate: "2022-02-02" },
         // { title: "test2", todoDate: "2022-02-11" },
         // { title: "test3", todoDate: "2022-02-11" },
     ])
-    const [ loading, setLoading ] = useState(true) 
+    const [ loading, setLoading ] = useState(true)
     const monthStart = startOfMonth(currentDate)
     const monthEnd = endOfMonth(monthStart)
 
@@ -24,8 +24,8 @@ const Calendar = (props) => {
     }
 
     const nextMonth = () => {
-        setCurrrentDate(addMonths(currentDate, 1))
         setLoading(true)
+        setCurrrentDate(addMonths(currentDate, 1))
         console.log('nextMonth')
     }
 
@@ -42,15 +42,27 @@ const Calendar = (props) => {
                 setTodos(response.todos)
             })
             setLoading(false)
-        }        
+        }
     }
 
-    useEffect(() => {
+    const showDayTodoList = (value) => {
+        console.log('dateValue:: ', value)
+    }
+
+    // useEffect(() => {
+    //     console.log('useEffect')
+    //     if(loading || props.loading){
+    //         // const isLoading = true
+    //         getTodoList(true)
+    //     }
+    // }, [loading, props.loading])
+
+    useLayoutEffect(() => {
         console.log('useEffect')
         if(loading || props.loading){
-            const isLoading = true
+            // const isLoading = true
             getTodoList(true)
-        }        
+        }
     }, [loading, props.loading])
 
     const header = () => {
@@ -87,21 +99,23 @@ const Calendar = (props) => {
                 <div className='column col-center' key={i}>
                     {format(addDays(startDate, i), dateFormat)}
                 </div>
-            )            
+            )
         }
 
         return <div className='days row'>{days}</div>
-        
+
     }
 
     const cells = () => {
         const rows = []
         const startDate = startOfWeek(monthStart)
         const endDate = endOfWeek(monthEnd)
-        const dateFormat = 'dd'
+        const dayFormat = 'dd'
+        const dateFormat = 'yyyy-MM-dd'
 
         let days = []
         let day = startDate
+        let formattedDay = ''
         let formattedDate = ''
 
         // console.log('dmonthStartay:: ', monthStart) //Tue Feb 01 2022 00:00:00 GMT+0900 (한국 표준시)
@@ -112,7 +126,7 @@ const Calendar = (props) => {
         let todoByDate = {} //날짜를 key값으로 가지는 object
         let arrTodoTitle = [] //key값의 value를 배열로 등록(중복된 날짜의 value값 처리를 위해서)
 
-        {todos.map((item, index) => {            
+        {todos.map((item, index) => {
             let todoDateDay = item.todoDate.slice(8, item.todoDate.length)
             arrTodoTitle.push(item.title)
             if(todoByDate.hasOwnProperty(todoDateDay)){
@@ -123,40 +137,48 @@ const Calendar = (props) => {
             arrTodoTitle = []
         })}
         // console.log('todoByDate: ', todoByDate)
-        
+
         let lis = []
 
         while(day <= endDate) {
             for(let i=0; i<7; i++){
-                formattedDate = format(day, dateFormat)
                 const cloneDay = day
-                
+                formattedDay = format(day, dayFormat)
+                formattedDate = format(day, dateFormat)
+
+
                 {isSameMonth(day, monthStart) && Object.entries(todoByDate).map((item, index) => {
-                    if(item[0] === formattedDate){
+                    if(item[0] === formattedDay){
                         let liKey = ''
                         item[1].forEach((title, i) => {
-                            liKey = formattedDate + '_' + i
+                            liKey = formattedDay + '_' + i
                             // console.log('likey: ', liKey)
-                            lis.push(<li key={liKey}>{title}</li>)
-                        })                            
+                            lis.push(<li key={liKey}><span>{title}</span></li>)
+                        })
                     }
                 })}
-                
+
                 days.push(
                     <div
                         className={
-                            `column cell cell_${formattedDate} ${!isSameMonth(day, monthStart)
+                            `column cell cell-${formattedDate} ${!isSameMonth(day, monthStart)
                             ? 'disabled'
                             : isSameDay(day, selectedDate)
                             ? 'selected'
                             : ''
                             }`
-                        } 
-                        key={day}
+                        }
+                        key={formattedDate}
+                        onClick={showDayTodoList.bind(null, formattedDate)}
                     >
-                        <span className='number'>{formattedDate}</span>
-                        <span className='bg'>{formattedDate}</span>
-                        <ul>{formattedDate in todoByDate && lis}</ul>
+                        <div className='day-top'>
+                            <span className='number'>{formattedDay}</span>
+                            <span className='bg'>{formattedDay}</span>
+                            <div></div>
+                        </div>
+                        <div className='day-body'>
+                            <ul className='contents'>{formattedDay in todoByDate && lis}</ul>
+                        </div>
                     </div>
                 );
                 day = addDays(day, 1)
@@ -169,10 +191,10 @@ const Calendar = (props) => {
         }
         // console.log('lis: ', lis)
 
-        
+
         return (
             <div className='body'>{rows}</div>
-        ) 
+        )
     }
 
     return (
