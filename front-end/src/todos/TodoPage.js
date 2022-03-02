@@ -6,14 +6,16 @@ import TodoForm from './TodoForm'
 function TodoPage() {
 
     const [ loading, setLoading ] = useState(false)
+    const [ clickedDate, setClickedDate ] = useState('')
 
-    console.log('TodoPage loading:: ', loading)
+    // console.log('TodoPage loading:: ', loading)
+    // console.log('TodoPage clickedDate:: ', clickedDate)
 
     return (
         <div>
-            <TodoForm setLoading={setLoading}/>
+            <TodoForm setLoading={setLoading} clickedDate={clickedDate} setClickedDate={setClickedDate}/>
             {/* <TodoList /> */}
-            <Calendar loading={loading}/>
+            <Calendar loading={loading} setClickedDate={setClickedDate} clickedDate={clickedDate}/>
         </div>
     )
 }

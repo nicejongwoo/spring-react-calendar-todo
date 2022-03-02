@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 //values, errors, submitting, handleChange, handleSubmit
 
-function useForm({ initialValues, onSubmit, validate }){
+function useForm({ initialValues, onSubmit, validate, clickedDate }){
     const [values, setValues] = useState(initialValues)
     const [errors, setErrors] = useState({})
     const [submitting, setSubmitting] = useState(false)
@@ -19,17 +19,17 @@ function useForm({ initialValues, onSubmit, validate }){
 
         event.preventDefault()
 
-        //setErrors(validate(values))
-
-        await new Promise((r) => { 
-            setTimeout(r, 500) 
-        }) //<-이부분 문법 공부필요        
+        await new Promise((r) => {
+            setTimeout(r, 500)
+        }) //<-이부분 문법 공부필요
 
         setErrors(validate(values))
         console.log('handleSubmit 종료')
     }
 
     useEffect(() => { //<-이부분 문법 공부필요
+        setValues({'title': '', 'todoDate': clickedDate})
+
         if(submitting) {
             // console.log('Object.keys(errors):: ', Object.keys(errors))
             if(Object.keys(errors).length === 0) { // Object.key()<-이부분 문법 공부필요
@@ -37,9 +37,9 @@ function useForm({ initialValues, onSubmit, validate }){
                 setValues(initialValues)
             }
             setSubmitting(false)
-            
+
         }
-    }, [errors])
+    }, [clickedDate, errors])
 
     return {
         values,

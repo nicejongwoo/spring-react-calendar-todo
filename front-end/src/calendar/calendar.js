@@ -7,13 +7,15 @@ import './calendar.css'
 const Calendar = (props) => {
 
     const [ currentDate, setCurrrentDate ] = useState(new Date())
-    const [ selectedDate, setSelectedDate ] = useState(new Date())
+    const [ markToday, setMarkToday ] = useState(new Date())
+    const [ clickedDate, setClickedDate ] = useState('')
     const [ todos, setTodos ] = useState([
         // { title: "test1", todoDate: "2022-02-02" },
         // { title: "test2", todoDate: "2022-02-11" },
         // { title: "test3", todoDate: "2022-02-11" },
     ])
     const [ loading, setLoading ] = useState(true)
+
     const monthStart = startOfMonth(currentDate)
     const monthEnd = endOfMonth(monthStart)
 
@@ -47,15 +49,8 @@ const Calendar = (props) => {
 
     const showDayTodoList = (value) => {
         console.log('dateValue:: ', value)
+        props.setClickedDate(value)
     }
-
-    // useEffect(() => {
-    //     console.log('useEffect')
-    //     if(loading || props.loading){
-    //         // const isLoading = true
-    //         getTodoList(true)
-    //     }
-    // }, [loading, props.loading])
 
     useLayoutEffect(() => {
         console.log('useEffect')
@@ -163,8 +158,10 @@ const Calendar = (props) => {
                         className={
                             `column cell cell-${formattedDate} ${!isSameMonth(day, monthStart)
                             ? 'disabled'
-                            : isSameDay(day, selectedDate)
+                            : isSameDay(day, markToday)
                             ? 'selected'
+                            // : isSameDay(day, clickedDate)
+                            // ? 'clicked'
                             : ''
                             }`
                         }

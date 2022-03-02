@@ -18,7 +18,8 @@ const override = css`
 
 function TodoForm(props) {
     const [ color, setColor ] = useState('#fff')
-    
+    const [ clickedDate, setClickedDate ] = useState()
+
     const { values, errors, submitting, handleChange, handleSubmit } = useForm({
         initialValues: { title: '', todoDate: '' },
         onSubmit: (values) => {
@@ -28,41 +29,57 @@ function TodoForm(props) {
             });
         },
         validate,
+        clickedDate,
+    })
+
+    const closeForm = () => {
+        props.setClickedDate('')
+    }
+
+    useEffect(() => {
+        setClickedDate(props.clickedDate)
     })
 
     return (
-        <form className="col" onSubmit={handleSubmit} noValidate>
-            <div className="form-group">
-                <label>Title</label>
-                <input 
-                    type="text"
-                    name="title"
-                    value={values.title} 
-                    onChange={handleChange}
-                    className={errors.title && "errorInput"}
-                />
-                {errors.title && <span className="errorMessage">{errors.title}</span>}
+
+        <div className="form-container">
+            {props.clickedDate !== '' && <div className="form-area">
+                <form className="col" onSubmit={handleSubmit} noValidate>
+                    <div className="form-group">
+                        <label>Title</label>
+                        <input
+                            type="text"
+                            name="title"
+                            value={values.title}
+                            onChange={handleChange}
+                            className={`form-control ${errors.title ? 'is-invalid' : ''}`}
+                        />
+                        {errors.title && <span className="invalid-feedback">{errors.title}</span>}
+                    </div>
+
+                    <div className="form-group">
+                        <label>todoDate</label>
+                        <input
+                            type="text"
+                            name="todoDate"
+                            value={clickedDate}
+                            onChange={handleChange}
+                            className={`form-control ${errors.todoDate ? 'is-invalid' : ''}`}
+                        />
+                        {errors.todoDate && <span className="invalid-feedback">{errors.todoDate}</span>}
+                    </div>
+
+                    <button className="btn btn-success" disabled={submitting}>저장</button>
+
+                    <Alert/>
+
+                    <ClipLoader color={color} loading={submitting} css={override} size={30} />
+                    {/* {submitting ? console.log('보내는 중') : console.log('완료')} */}
+                </form>
+                <button className="close-form" onClick={closeForm}>&times;</button>
             </div>
-            
-            <div className="form-group">
-                <label>todoDate</label>
-                <input 
-                    type="text"
-                    name="todoDate"
-                    value={values.todoDate} 
-                    onChange={handleChange}
-                    className={errors.todoDate && "errorInput"}
-                />
-                {errors.todoDate && <span className="errorMessage">{errors.todoDate}</span>}
-            </div>
-
-            <button className="btn btn-success" disabled={submitting}>저장</button>
-
-            <Alert/>
-
-            <ClipLoader color={color} loading={submitting} css={override} size={30} />
-            {/* {submitting ? console.log('보내는 중') : console.log('완료')} */}
-        </form>
+            }
+        </div>
     )
 }
 

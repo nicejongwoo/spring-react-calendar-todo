@@ -34,6 +34,28 @@ header {
     border-bottom: 1px solid lightgray;
     background: white;
 }
+
+/* FORM */
+.form-container .form-area {
+    display: block;
+    position: relative;
+    width: 100%;
+    border: 1px solid lightgray;
+    margin: 2em 0;
+    padding: .75em 1.25em;
+}
+.form-container .form-area .close-form {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: inherit;
+    background-color: transparent;
+    font-weight: 700;
+    font-size: 1.5em;
+    line-height: 1;
+    border: 0;
+}
+
 /* GRID */
 .row {
     margin: 0;
@@ -60,6 +82,7 @@ header {
     border: 1px solid lightgray;
     height: auto;
     margin:0 auto;
+    margin-top: 2em;
 }
 .calendar .header {
     text-transform: uppercase;
@@ -180,6 +203,11 @@ header {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+.calendar .body .cell:hover .number, .calendar .body .clicked   {
+    background-color: blue;
+}
+
 /*
 .calendar .body .column {
     flex-grow: 0;
