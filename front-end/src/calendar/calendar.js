@@ -1,6 +1,6 @@
 import { addDays, addMonths, endOfMonth, endOfWeek, format, getDay, isSameDay, isSameMonth, startOfMonth, startOfWeek, subMonths } from 'date-fns'
 import { useEffect, useLayoutEffect, useState } from 'react'
-import { getTodoListMonthly } from '../todos/TodoService'
+import { getTodoListMonthly, getTodoListByTodoDate } from '../todos/TodoService'
 
 import './calendar.css'
 
@@ -8,7 +8,6 @@ const Calendar = (props) => {
 
     const [ currentDate, setCurrrentDate ] = useState(new Date())
     const [ markToday, setMarkToday ] = useState(new Date())
-    const [ clickedDate, setClickedDate ] = useState('')
     const [ todos, setTodos ] = useState([
         // { title: "test1", todoDate: "2022-02-02" },
         // { title: "test2", todoDate: "2022-02-11" },
@@ -31,25 +30,31 @@ const Calendar = (props) => {
         console.log('nextMonth')
     }
 
-    const getTodoList = (loading) => {
+    const getTodoList = () => {
         const dateFormat = 'yyyy-MM-dd'
         const formattedStartDate = format(monthStart, dateFormat)
         const formattedEndDate = format(monthEnd, dateFormat)
 
         console.log('getTodoList')
 
-        if(loading) {
-            getTodoListMonthly(formattedStartDate, formattedEndDate).then((response) => {
-                // console.log('response:: ', response)
-                setTodos(response.todos)
-            })
-            setLoading(false)
-        }
+        getTodoListMonthly(formattedStartDate, formattedEndDate).then((response) => {
+            // console.log('response:: ', response)
+            setTodos(response.todos)
+        })
+        setLoading(false)
     }
 
-    const showDayTodoList = (value) => {
+
+
+    const clickDay = (value) => {
         console.log('dateValue:: ', value)
         props.setClickedDate(value)
+
+        getTodoListByTodoDate(value).then((response) => {
+            console.log('response:: ', response)
+            props.setTodosByDate(response.todos)
+        })
+
     }
 
     useLayoutEffect(() => {
@@ -137,7 +142,7 @@ const Calendar = (props) => {
 
         while(day <= endDate) {
             for(let i=0; i<7; i++){
-                const cloneDay = day
+                // const cloneDay = day
                 formattedDay = format(day, dayFormat)
                 formattedDate = format(day, dateFormat)
 
@@ -166,7 +171,7 @@ const Calendar = (props) => {
                             }`
                         }
                         key={formattedDate}
-                        onClick={showDayTodoList.bind(null, formattedDate)}
+                        onClick={clickDay.bind(null, formattedDate)}
                     >
                         <div className='day-top'>
                             <span className='number'>{formattedDay}</span>

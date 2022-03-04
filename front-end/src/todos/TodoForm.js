@@ -18,7 +18,7 @@ const override = css`
 
 function TodoForm(props) {
     const [ color, setColor ] = useState('#fff')
-    const [ clickedDate, setClickedDate ] = useState()
+    const [ clickedDate, setClickedDate ] = useState('')
 
     const { values, errors, submitting, handleChange, handleSubmit } = useForm({
         initialValues: { title: '', todoDate: '' },
@@ -32,53 +32,49 @@ function TodoForm(props) {
         clickedDate,
     })
 
-    const closeForm = () => {
-        props.setClickedDate('')
-    }
-
     useEffect(() => {
         setClickedDate(props.clickedDate)
     })
 
     return (
 
-        <div className="form-container">
-            {props.clickedDate !== '' && <div className="form-area">
-                <form className="col" onSubmit={handleSubmit} noValidate>
-                    <div className="form-group">
-                        <label>Title</label>
-                        <input
-                            type="text"
-                            name="title"
-                            value={values.title}
-                            onChange={handleChange}
-                            className={`form-control ${errors.title ? 'is-invalid' : ''}`}
-                        />
-                        {errors.title && <span className="invalid-feedback">{errors.title}</span>}
+        <div className="form-container col">
+            <div className="form-area">
+                <form onSubmit={handleSubmit} noValidate>
+                    <div className="row mb-3">
+                        <label className="col-sm-2 col-form-label col-form-label-sm">DodoDate</label>
+                        <div className="col-sm-10">
+                            <input
+                                type="text"
+                                name="todoDate"
+                                value={clickedDate}
+                                onChange={handleChange}
+                                className={`form-control form-control-sm ${errors.todoDate ? 'is-invalid' : ''}`}
+                            />
+                            {/* {errors.todoDate && <span className="invalid-feedback">{errors.todoDate}</span>} */}
+                        </div>
                     </div>
 
-                    <div className="form-group">
-                        <label>todoDate</label>
-                        <input
-                            type="text"
-                            name="todoDate"
-                            value={clickedDate}
-                            onChange={handleChange}
-                            className={`form-control ${errors.todoDate ? 'is-invalid' : ''}`}
-                        />
-                        {errors.todoDate && <span className="invalid-feedback">{errors.todoDate}</span>}
+                    <div className="row mb-3">
+                        <label className="col-sm-2 col-form-label col-form-label-sm">Title</label>
+                        <div className="col-sm-10">
+                            <input
+                                type="text"
+                                name="title"
+                                value={values.title}
+                                onChange={handleChange}
+                                className={`form-control form-control-sm ${errors.title ? 'is-invalid' : ''}`}
+                            />
+                            {/* {errors.title && <span className="invalid-feedback">{errors.title}</span>} */}
+                        </div>
                     </div>
 
                     <button className="btn btn-success" disabled={submitting}>저장</button>
 
-                    <Alert/>
-
-                    <ClipLoader color={color} loading={submitting} css={override} size={30} />
-                    {/* {submitting ? console.log('보내는 중') : console.log('완료')} */}
                 </form>
-                <button className="close-form" onClick={closeForm}>&times;</button>
+                <Alert/>
+                <ClipLoader color={color} loading={submitting} css={override} size={30} />
             </div>
-            }
         </div>
     )
 }

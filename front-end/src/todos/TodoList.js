@@ -1,22 +1,26 @@
-import { useState } from "react";
-import { getTodoListByTodoDate } from "./TodoService";
+import { useEffect } from "react";
 
+function TodoList(props) {
 
-function TodoList() {
-    const [ todoDate, setTodoDate ] = useState('2022-01-31')
+    const todos = []
 
-    const handleClick = (event) => {
-        event.preventDefault()
-        getTodoListByTodoDate(todoDate).then((response) => {
-            console.log('response:: ', response)
-        })
-    }
+    props.todosByDate.map((todo) => {
+        return (
+            todos.push(
+                <tr key={todo.todoToken}>
+                    <td>{todo.title}</td>
+                    <td>{todo.todoDate}</td>
+                    <td>{todo.done}</td>
+                </tr>
+            )
+        )
+    })
 
     return (
-        <div>
-            <div>
+        <div className="list-container col">
+            {/* <div>
                 <button onClick={handleClick}>2022-01-31</button>
-            </div>
+            </div> */}
             <table className="table">
                 <thead>
 
@@ -27,10 +31,11 @@ function TodoList() {
                         <th>날짜</th>
                         <th>완료여부</th>
                     </tr>
+                    {todos}
                 </tbody>
             </table>
         </div>
-        
+
     )
 }
 
