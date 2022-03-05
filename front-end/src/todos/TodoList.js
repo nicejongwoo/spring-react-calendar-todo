@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 
 function TodoList(props) {
 
@@ -10,7 +9,7 @@ function TodoList(props) {
                 <tr key={todo.todoToken}>
                     <td>{todo.title}</td>
                     <td>{todo.todoDate}</td>
-                    <td>{todo.done}</td>
+                    <td>{!todo.done && '진행중'}</td>
                 </tr>
             )
         )

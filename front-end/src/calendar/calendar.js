@@ -44,17 +44,12 @@ const Calendar = (props) => {
         setLoading(false)
     }
 
-
-
     const clickDay = (value) => {
-        console.log('dateValue:: ', value)
-        props.setClickedDate(value)
-
         getTodoListByTodoDate(value).then((response) => {
-            console.log('response:: ', response)
+            // console.log('response:: ', response)
             props.setTodosByDate(response.todos)
         })
-
+        props.setClickedDate(value)
     }
 
     useLayoutEffect(() => {
