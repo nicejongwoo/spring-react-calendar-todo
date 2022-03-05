@@ -1,41 +1,52 @@
-import React, { useState } from "react";
-import Calendar from "../Calendar";
+import { useEffect, useState } from "react"
+import { getTodoListByTodoDate } from "./TodoService"
 import TodoForm from './TodoForm'
-import TodoList from "./TodoList";
+import TodoList from './TodoList'
+import './Todo.css'
 
-function TodoPage() {
+function TodoPage({ clickedEvent, setIsOpenPopup, setIsSaved }) {
 
+    // const [ clickedDate, setClickedDate ] = useState('')
     const [ loading, setLoading ] = useState(false)
-    const [ clickedDate, setClickedDate ] = useState('')
-    const [ todosByDate, setTodosByDate ] = useState([]);
+    const [ todosByDate, setTodosByDate ] = useState([])
+    const [ saved, setSaved ] = useState(false)
 
     const closeForm = () => {
-        setClickedDate('')
+        setIsOpenPopup(false)
     }
 
+    // const getTodosByDate = (value) => {
+    //     setTodosByDate(value)
+    // }
+
+    useEffect(() => {
+        getTodoListByTodoDate(clickedEvent.formattedDay).then((response) => {
+            // console.log('response:: ', response)
+            setTodosByDate(response.todos)
+            setLoading(true)
+        })
+
+        if(saved) {
+            setIsSaved(true)
+        }
+
+    }, [clickedEvent, saved])
+
     return (
-        <div>
-            {clickedDate &&
+        <div className="todo-popup">
             <div className="todo-container">
                 <div className="todo-header">
+                    <span>#</span>
                     <p className="todo-title">
-                        {clickedDate}
+                        {clickedEvent.formattedDay}
                     </p>
                     <button className="close-form" onClick={closeForm}>&times;</button>
                 </div>
                 <div className="todo-body row">
-                    <TodoForm setLoading={setLoading} clickedDate={clickedDate} />
-                    <TodoList todosByDate={todosByDate} />
+                    <TodoForm clickedEvent={clickedEvent} setSaved={setSaved} />
+                    {(todosByDate.length > 0 || saved) && <TodoList todosByDate={todosByDate} />}
                 </div>
-
             </div>
-            }
-            <Calendar
-                loading={loading}
-                setClickedDate={setClickedDate}
-                clickedDate={clickedDate}
-                setTodosByDate={setTodosByDate}
-            />
         </div>
     )
 }

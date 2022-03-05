@@ -1,20 +1,20 @@
-import { addDays, addMonths, endOfMonth, endOfWeek, format, getDay, isSameDay, isSameMonth, startOfMonth, startOfWeek, subMonths } from 'date-fns'
-import { useEffect, useLayoutEffect, useState } from 'react'
+import { addDays, addMonths, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, startOfMonth, startOfWeek, subMonths } from 'date-fns'
+import { useState, useLayoutEffect } from 'react'
 import { getTodoListMonthly, getTodoListByTodoDate } from './todo/TodoService'
 
 import './Calendar.css'
-import { isCompositeComponent } from 'react-dom/test-utils';
 
-const Calendar = (props) => {
+
+const Calendar = ({ getClickedInfo, isSaved }) => {
 
     const [ currentDate, setCurrrentDate ] = useState(new Date())
     const [ markToday, setMarkToday ] = useState(new Date())
     const [ todos, setTodos ] = useState([
-        { title: "스프링및자바공부", todoDate: "2022-03-02", todoToken: "abcdefg" },
-        { title: "이직을위한코딩테스트공부", todoDate: "2022-03-11", todoToken: "43e21ef" },
-        { title: "리액트공부", todoDate: "2022-03-11", todoToken: "dsfaddd" },
-        { title: "자료정리", todoDate: "2022-04-01", todoToken: "xfczcvx" },
-        { title: "면접", todoDate: "2022-04-22", todoToken: "fdghhgf" },
+        // { title: "스프링및자바공부", todoDate: "2022-03-02", todoToken: "abcdefg" },
+        // { title: "이직을위한코딩테스트공부", todoDate: "2022-03-11", todoToken: "43e21ef" },
+        // { title: "리액트공부", todoDate: "2022-03-11", todoToken: "dsfaddd" },
+        // { title: "자료정리", todoDate: "2022-04-01", todoToken: "xfczcvx" },
+        // { title: "면접", todoDate: "2022-04-22", todoToken: "fdghhgf" },
     ])
     const [ loading, setLoading ] = useState(true)
 
@@ -22,47 +22,42 @@ const Calendar = (props) => {
     const monthEnd = endOfMonth(monthStart)
 
     const prevMonth = () => {
-        setCurrrentDate(subMonths(currentDate, 1))
         setLoading(true)
+        setCurrrentDate(subMonths(currentDate, 1))
+        getClickedInfo(JSON.stringify({ 'formattedDay': '', 'parsedDay': '', 'isChangedMonth': true }))
         console.log('prevMonth')
     }
 
     const nextMonth = () => {
         setLoading(true)
         setCurrrentDate(addMonths(currentDate, 1))
+        getClickedInfo(JSON.stringify({ 'formattedDay': '', 'parsedDay': '', 'isChangedMonth': true }))
         console.log('nextMonth')
     }
 
-    const getTodoList = () => {
+    const getTodoList =  () => {
         const dateFormat = 'yyyy-MM-dd'
         const formattedStartDate = format(monthStart, dateFormat)
         const formattedEndDate = format(monthEnd, dateFormat)
 
-        console.log('getTodoList')
-
         getTodoListMonthly(formattedStartDate, formattedEndDate).then((response) => {
-            // console.log('response:: ', response)
+            console.log('response:: ', response)
             setTodos(response.todos)
+            setLoading(false)
         })
-        setLoading(false)
     }
 
-    const clickDay = (value) => {
-        getTodoListByTodoDate(value).then((response) => {
-            // console.log('response:: ', response)
-            props.setTodosByDate(response.todos)
-        })
-        props.setClickedDate(value)
+    const clickDay = (_formattedDate, _day, e) => {
+        getClickedInfo(JSON.stringify({ 'formattedDay': _formattedDate, 'parsedDay': _day, 'isChangedMonth': false }))
+        //todo 해당 셀 active
+
     }
 
-
-    // useLayoutEffect(() => {
-        // console.log('useEffect')
-        // if(loading || props.loading){
-        //     // const isLoading = true
-        //     getTodoList(true)
-        // }
-    // }, [loading, props.loading])
+    useLayoutEffect(() => {
+        if(loading || isSaved){
+            getTodoList(true)
+        }
+    }, [loading, isSaved])
 
     const header = () => {
         const dateFormat = 'yyyy년 MM월';
@@ -166,7 +161,7 @@ const Calendar = (props) => {
                             }`
                         }
                         key={formattedDate}
-                        onClick={clickDay.bind(null, formattedDate)}
+                        onClick={clickDay.bind(null, formattedDate, day)}
                     >
                         <div className='day-top'>
                             <span className='number'>{formattedDay}</span>
@@ -174,7 +169,6 @@ const Calendar = (props) => {
                             <div></div>
                         </div>
                         <div className='day-body'>
-                            {/* <ul className='contents'>{formattedDay in todoListGroupByDay && lis}</ul> */}
                             <ul className='contents'>{isSameMonth(day, monthStart) && lis}</ul>
                         </div>
                     </div>
@@ -191,7 +185,12 @@ const Calendar = (props) => {
 
 
         return (
-            <div className='body'>{rows}</div>
+            <div className='body'>
+                {rows}
+                {loading && <div className="loading">
+                    로딩중...
+                </div>}
+            </div>
         )
     }
 
