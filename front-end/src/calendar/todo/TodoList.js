@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { deleteTodoApi } from "./TodoService"
 
 function TodoList({ todosByDate, completeDelete }) {
@@ -6,8 +7,10 @@ function TodoList({ todosByDate, completeDelete }) {
 
     const deleteTodo = (token, e) => {
         // console.log('deleteTodo:: ', token)
-        deleteTodoApi(token)
-        completeDelete(true)
+        deleteTodoApi(token).then((response) => {
+            completeDelete(true)
+            toast.success(response.message)
+        });
     }
 
     todosByDate.map((todo) => {
