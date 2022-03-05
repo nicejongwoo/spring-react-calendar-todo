@@ -30,11 +30,15 @@ function useForm({ initialValues, onSubmit, validate, clickedDate }){
     useEffect(() => { //<-이부분 문법 공부필요
         setValues({'title': '', 'todoDate': clickedDate})
 
+        // if(clickedDate != '') {
+        //     setErrors({})
+        // }
+
         if(submitting) {
             // console.log('Object.keys(errors):: ', Object.keys(errors))
             if(Object.keys(errors).length === 0) { // Object.key()<-이부분 문법 공부필요
                 onSubmit(values)
-                setValues(initialValues)
+                setValues({'title': '', 'todoDate': clickedDate})
             }
             setSubmitting(false)
 

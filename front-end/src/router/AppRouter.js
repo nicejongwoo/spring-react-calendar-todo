@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import TodoPage from "../todos/TodoPage"
+import CalendarPage from "../calendar/CalendarPage"
 
 function AppRouter () {
     return (
@@ -7,7 +7,7 @@ function AppRouter () {
             <Router>
                 <div className="container">
                     <Routes>
-                        <Route path="/todos" exact element={<TodoPage/>} />
+                        <Route path="/calendar" exact element={<CalendarPage/>} />
                     </Routes>
                 </div>
             </Router>
