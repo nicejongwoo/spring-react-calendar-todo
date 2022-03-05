@@ -6,14 +6,14 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from "react";
 
 
-function TodoForm({ clickedEvent, setSaved }) {
+function TodoForm({ clickedEvent, completeSave }) {
     const [ clickedDate, setClickedDate ] = useState('')
 
     const { values, errors, submitting, handleChange, handleSubmit } = useForm({
         initialValues: { title: '', todoDate: '' },
         onSubmit: (values) => {
             createTodo(values).then((response) => {
-                setSaved(true)
+                completeSave(true)
                 toast.success(response.message)
             });
         },
@@ -23,7 +23,7 @@ function TodoForm({ clickedEvent, setSaved }) {
 
     useEffect(() => {
         setClickedDate(clickedEvent.formattedDay)
-        setSaved(submitting)
+        // setSaved(submitting)
     }, [clickedEvent, submitting])
 
 

@@ -41,7 +41,7 @@ const Calendar = ({ getClickedInfo, isSaved }) => {
         const formattedEndDate = format(monthEnd, dateFormat)
 
         getTodoListMonthly(formattedStartDate, formattedEndDate).then((response) => {
-            console.log('response:: ', response)
+            console.log('getTodoListMonthly response:: ', response)
             setTodos(response.todos)
             setLoading(false)
         })
