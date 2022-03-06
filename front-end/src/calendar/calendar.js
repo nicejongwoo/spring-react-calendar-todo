@@ -1,8 +1,8 @@
 import { addDays, addMonths, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, startOfMonth, startOfWeek, subMonths } from 'date-fns'
 import { useState, useLayoutEffect } from 'react'
-import { getTodoListMonthly, getTodoListByTodoDate } from './todo/TodoService'
+import { getTodoListMonthly } from './todo/TodoService'
 
-import './Calendar.css'
+import './calendar.css'
 
 
 const Calendar = ({ getClickedInfo, isSaved }) => {
@@ -25,14 +25,14 @@ const Calendar = ({ getClickedInfo, isSaved }) => {
         setLoading(true)
         setCurrrentDate(subMonths(currentDate, 1))
         getClickedInfo(JSON.stringify({ 'formattedDay': '', 'parsedDay': '', 'isChangedMonth': true }))
-        console.log('prevMonth')
+        // console.log('prevMonth')
     }
 
     const nextMonth = () => {
         setLoading(true)
         setCurrrentDate(addMonths(currentDate, 1))
         getClickedInfo(JSON.stringify({ 'formattedDay': '', 'parsedDay': '', 'isChangedMonth': true }))
-        console.log('nextMonth')
+        // console.log('nextMonth')
     }
 
     const getTodoList =  () => {
@@ -41,7 +41,7 @@ const Calendar = ({ getClickedInfo, isSaved }) => {
         const formattedEndDate = format(monthEnd, dateFormat)
 
         getTodoListMonthly(formattedStartDate, formattedEndDate).then((response) => {
-            console.log('getTodoListMonthly response:: ', response)
+            // console.log('getTodoListMonthly response:: ', response)
             setTodos(response.todos)
             setLoading(false)
         })
@@ -107,7 +107,7 @@ const Calendar = ({ getClickedInfo, isSaved }) => {
         {todos.map((item, index) => {
             let todoDateDay = item.todoDate.slice(8, item.todoDate.length)
             if(isSameMonth(currentDate, new Date(item.todoDate))){
-                arrTodoTitle.push(JSON.stringify({ "title": item.title, "todoDate": item.todoDate, "todoToken": item.todoToken }))
+                arrTodoTitle.push(JSON.stringify({ "title": item.title, "todoDate": item.todoDate, "todoToken": item.todoToken, "done": item.done }))
 
                 if(todoListGroupByDay.hasOwnProperty(todoDateDay)){
                     todoListGroupByDay[todoDateDay].push(arrTodoTitle) //해당 key가 존재하면 value 배열에 추가
@@ -143,9 +143,10 @@ const Calendar = ({ getClickedInfo, isSaved }) => {
                 formattedDate = format(day, dateFormat)
 
                 {Object.entries(todoListGroupByDay).map((items, index) => {
+                    // console.log('items:: ', items)
                     items[1].forEach((item, i) => {
                         if(JSON.parse(item).todoDate === formattedDate) {
-                            lis.push(<li key={JSON.parse(item).todoToken}><span>{JSON.parse(item).title}</span></li>)
+                            lis.push(<li key={JSON.parse(item).todoToken} className={`${JSON.parse(item).done ? 'done-todo' : ''}`}><span>{JSON.parse(item).title}</span></li>)
                         }
                     })
                 })}

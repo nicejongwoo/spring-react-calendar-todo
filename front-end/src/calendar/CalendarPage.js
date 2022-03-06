@@ -1,5 +1,5 @@
 import TodoPage from "./todo/TodoPage";
-import Calendar from "./Calendar";
+import Calendar from "./calendar";
 import { useEffect, useState} from 'react'
 import Alert from "../components/Alert";
 

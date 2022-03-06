@@ -148,9 +148,14 @@
     line-height: 16px;
     background-color: rgb(3, 155, 229);
     color: #fff;
-    margin-bottom: .1em
+    margin-bottom: .1em;
+    padding: .1em;
 }
 
+.calendar .body .contents li.done-todo {
+    background-color:rgb(181, 192, 197);
+    text-decoration: line-through;
+}
 
 .calendar .body .contents li span {
     font-size: 12px;

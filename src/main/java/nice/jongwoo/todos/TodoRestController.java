@@ -27,7 +27,7 @@ public class TodoRestController {
         Todo todo = TodoRequest.toEntity(todoRequest);
         String todoToken = todoFacade.registerTodo(todo);
         Map<String, Object> response = new HashMap<>();
-        response.put("message", "등록완료");
+        response.put("message", "새로 등록했어요.");
         response.put("todoToken", todoToken);
 
         return ResponseEntity.created(new URI("/api/v1/todos/" + todoToken)).body(response);
@@ -72,7 +72,7 @@ public class TodoRestController {
     public ResponseEntity<?> updateDoneTrue(@PathVariable String todoToken) {
         todoFacade.changeOnTrue(todoToken);
         Map<String, Object> response = new HashMap<>();
-        response.put("message", "완료처리");
+        response.put("message", "다 했어요.");
         return ResponseEntity.ok(response);
     }
 
@@ -80,7 +80,7 @@ public class TodoRestController {
     public ResponseEntity<?> updateDoneFalse(@PathVariable String todoToken) {
         todoFacade.changeOnFalse(todoToken);
         Map<String, Object> response = new HashMap<>();
-        response.put("message", "진행중처리");
+        response.put("message", "아직 끝나지 않았어요.");
         return ResponseEntity.ok(response);
     }
 
@@ -102,7 +102,7 @@ public class TodoRestController {
     public ResponseEntity<?> removeTodo(@PathVariable String todoToken) {
         todoFacade.removeTodo(todoToken);
         Map<String, Object> response = new HashMap<>();
-        response.put("message", "삭제완료");
+        response.put("message", "삭제했어요.");
         return ResponseEntity.ok(response);
     }
 
