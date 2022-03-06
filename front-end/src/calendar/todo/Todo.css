@@ -114,6 +114,10 @@
     justify-content: flex-start;
 }
 
+.list-container ul li .todo-item div.done-todo {
+    color:rgb(181, 192, 197);
+    text-decoration: line-through;
+}
 
 .list-container ul li .todo-item span input {
     top: 0;

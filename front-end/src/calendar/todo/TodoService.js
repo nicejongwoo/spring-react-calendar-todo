@@ -54,3 +54,19 @@ export function deleteTodoApi(token) {
         method: 'DELETE',
     })
 }
+
+export function doneTodoApi(token) {
+    return request({
+        headers: headers,
+        url: API_BASE_URL + '/todo/' + token + '/done',
+        method: 'PUT',
+    })
+}
+
+export function undoneTodoApi(token) {
+    return request({
+        headers: headers,
+        url: API_BASE_URL + '/todo/' + token + '/undone',
+        method: 'PUT',
+    })
+}

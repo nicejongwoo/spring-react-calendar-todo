@@ -1,16 +1,38 @@
 import { toast } from "react-toastify";
-import { deleteTodoApi } from "./TodoService"
+import { deleteTodoApi, doneTodoApi, undoneTodoApi } from "./TodoService"
 
 function TodoList({ todosByDate, completeDelete }) {
 
     const todos = []
 
+    const thenApi = (response) => {
+        completeDelete(true)
+        toast.success(response.message)
+    }
+
     const deleteTodo = (token, e) => {
         // console.log('deleteTodo:: ', token)
         deleteTodoApi(token).then((response) => {
-            completeDelete(true)
-            toast.success(response.message)
+            thenApi(response)
         });
+    }
+
+    const updateDone = (token, e) => {
+        const currentStatus = e.target.value
+
+        if(currentStatus === 'false') {
+            //done처리 기존: false -> 변경: true
+            doneTodoApi(token).then((response) => {
+                thenApi(response)
+            })
+        }
+
+        if(currentStatus === 'true') {
+            //undone처리 기존: true -> 변경: false
+            undoneTodoApi(token).then((response) => {
+                thenApi(response)
+            })
+        }
     }
 
     todosByDate.map((todo) => {
@@ -19,9 +41,16 @@ function TodoList({ todosByDate, completeDelete }) {
                 <li key={todo.todoToken}>
                     <div className="todo-item">
                         <span>
-                            <input className="" type="checkbox" />
+                            <input
+                                type="checkbox"
+                                className=""
+                                value={todo.done}
+                                checked={todo.done}
+                                // onChange={(e, token) => updateDone(e, `${todo.todoToken}`)}
+                                onChange={updateDone.bind(this, `${todo.todoToken}`)}
+                            />
                         </span>
-                        <div>{todo.title}</div>
+                        <div className={`${todo.done ? 'done-todo' : ''}`}>{todo.title}</div>
                     </div>
                     <div className="todo-delete" onClick={deleteTodo.bind(null, `${todo.todoToken}`)}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">

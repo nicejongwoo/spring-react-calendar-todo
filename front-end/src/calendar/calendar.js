@@ -107,7 +107,7 @@ const Calendar = ({ getClickedInfo, isSaved }) => {
         {todos.map((item, index) => {
             let todoDateDay = item.todoDate.slice(8, item.todoDate.length)
             if(isSameMonth(currentDate, new Date(item.todoDate))){
-                arrTodoTitle.push(JSON.stringify({ "title": item.title, "todoDate": item.todoDate, "todoToken": item.todoToken }))
+                arrTodoTitle.push(JSON.stringify({ "title": item.title, "todoDate": item.todoDate, "todoToken": item.todoToken, "done": item.done }))
 
                 if(todoListGroupByDay.hasOwnProperty(todoDateDay)){
                     todoListGroupByDay[todoDateDay].push(arrTodoTitle) //해당 key가 존재하면 value 배열에 추가
@@ -143,9 +143,10 @@ const Calendar = ({ getClickedInfo, isSaved }) => {
                 formattedDate = format(day, dateFormat)
 
                 {Object.entries(todoListGroupByDay).map((items, index) => {
+                    console.log('items:: ', items)
                     items[1].forEach((item, i) => {
                         if(JSON.parse(item).todoDate === formattedDate) {
-                            lis.push(<li key={JSON.parse(item).todoToken}><span>{JSON.parse(item).title}</span></li>)
+                            lis.push(<li key={JSON.parse(item).todoToken} className={`${JSON.parse(item).done ? 'done-todo' : ''}`}><span>{JSON.parse(item).title}</span></li>)
                         }
                     })
                 })}
