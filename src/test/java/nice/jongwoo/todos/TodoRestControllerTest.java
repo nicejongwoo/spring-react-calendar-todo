@@ -60,7 +60,7 @@ class TodoRestControllerTest {
         //then - verify the output
         response.andDo(print())
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.message", is("등록완료")))
+            .andExpect(jsonPath("$.message", is("새로 등록했어요.")))
         ;
     }
 
@@ -133,7 +133,7 @@ class TodoRestControllerTest {
         //then - verify the output
         response.andDo(print())
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.message", is("success")))
+            .andExpect(jsonPath("$.message", is("다 했어요.")))
         ;
     }
 
@@ -149,7 +149,7 @@ class TodoRestControllerTest {
         //then - verify the output
         response.andDo(print())
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.message", is("success")))
+            .andExpect(jsonPath("$.message", is("아직 끝나지 않았어요.")))
         ;
     }
 
@@ -173,7 +173,7 @@ class TodoRestControllerTest {
         //then - verify the output
         response.andDo(print())
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.message", is("success")))
+            .andExpect(jsonPath("$.message", is("수정완료")))
         ;
     }
 
@@ -191,7 +191,7 @@ class TodoRestControllerTest {
         //then - verify the output
         response.andDo(print())
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.message", is("success")))
+            .andExpect(jsonPath("$.message", is("삭제했어요.")))
         ;
         verify(todoFacade, times(1)).removeTodo(todo.getTodoToken());
     }
