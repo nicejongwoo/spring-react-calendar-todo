@@ -14,7 +14,7 @@ function TodoPage({ clickedEvent, setIsOpenPopup, setIsSaved }) {
     }
 
     const completeSave = (result) => {
-        console.log('===completeSave===', result)
+        // console.log('===completeSave===', result)
 
         if(result) {
             setSaved(true)
@@ -23,8 +23,8 @@ function TodoPage({ clickedEvent, setIsOpenPopup, setIsSaved }) {
         }
     }
 
-    const completeDelete = (result) => {
-        console.log('===completeDelete===', result)
+    const completeAction = (result) => {
+        // console.log('===completeAction===', result)
         if(result) {
             setSaved(true)
             setIsSaved(true)
@@ -33,9 +33,9 @@ function TodoPage({ clickedEvent, setIsOpenPopup, setIsSaved }) {
     }
 
     const getTodo = () => {
-        console.log("getTodo")
+        // console.log("getTodo")
         getTodoListByTodoDate(clickedEvent.formattedDay).then((response) => {
-            console.log('getTodoListByTodoDate response:: ', response)
+            // console.log('getTodoListByTodoDate response:: ', response)
             setTodosByDate(response.todos)
             return false;
         })
@@ -52,34 +52,6 @@ function TodoPage({ clickedEvent, setIsOpenPopup, setIsSaved }) {
         setSaved(false)
     }, [saved])
 
-    // if(clickedEvent) {
-    //     getTodoListByTodoDate(clickedEvent.formattedDay).then((response) => {
-    //         console.log('getTodoListByTodoDate response:: ', response)
-    //         setTodosByDate(response.todos)
-    //         return false;
-    //     })
-    // }
-
-    // useEffect(() => {
-    //     console.log('TodoPage useEffect clickedEvent?? :: ', clickedEvent)
-    //     const getTodoListByTodoDate = () => {
-    //         getTodoListByTodoDate(clickedEvent.formattedDay).then((response) => {
-    //             console.log('getTodoListByTodoDate response:: ', response)
-    //             setTodosByDate(response.todos)
-    //         })
-    //     }
-    // }, [clickedEvent, completeSave, completeDelete])
-
-    // useEffect(() => {
-    //     if(saved) {
-    //         setIsSaved(true)
-    //     }
-    //     getTodoListByTodoDate(clickedEvent.formattedDay).then((response) => {
-    //         console.log('getTodoListByTodoDate response:: ', response)
-    //         setTodosByDate(response.todos)
-    //     })
-    //     console.log('TodoPage useEffect saved? :: ', saved)
-    // }, [saved])
 
     return (
         <div className="todo-popup">
@@ -94,7 +66,7 @@ function TodoPage({ clickedEvent, setIsOpenPopup, setIsSaved }) {
                 <div className="todo-body row">
                     <TodoForm clickedEvent={clickedEvent} completeSave={completeSave} />
 
-                    {(todosByDate.length > 0 || saved) && <TodoList todosByDate={todosByDate} completeDelete={completeDelete}/>}
+                    {(todosByDate.length > 0 || saved) && <TodoList todosByDate={todosByDate} completeAction={completeAction}/>}
                 </div>
             </div>
         </div>

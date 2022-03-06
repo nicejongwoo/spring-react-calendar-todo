@@ -1,12 +1,12 @@
 import { toast } from "react-toastify";
 import { deleteTodoApi, doneTodoApi, undoneTodoApi } from "./TodoService"
 
-function TodoList({ todosByDate, completeDelete }) {
+function TodoList({ todosByDate, completeAction }) {
 
     const todos = []
 
     const thenApi = (response) => {
-        completeDelete(true)
+        completeAction(true)
         toast.success(response.message)
     }
 
