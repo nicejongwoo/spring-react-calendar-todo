@@ -46,3 +46,11 @@ export function getTodoListMonthly(startDate, endDate) {
         method: 'GET',
     })
 }
+
+export function deleteTodoApi(token) {
+    return request({
+        headers: headers,
+        url: API_BASE_URL + '/todo/' + token,
+        method: 'DELETE',
+    })
+}
