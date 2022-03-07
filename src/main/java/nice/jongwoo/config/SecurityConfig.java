@@ -20,8 +20,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.headers().frameOptions().disable();
 
-        http.authorizeRequests()
-            .antMatchers("/api/v1/todos/**").authenticated()
+        http.httpBasic()
+            .and()
+            .authorizeRequests().antMatchers("/api/v1/todos/**").authenticated()
             .and()
             .authorizeRequests().anyRequest().permitAll();
 
