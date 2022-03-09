@@ -22,7 +22,7 @@ public class Member {
     private long id;
 
     @Column(unique = true, nullable = false)
-    private String token;
+    private String userToken;
 
     @Column(unique = true, nullable = false)
     private String email;
@@ -33,12 +33,17 @@ public class Member {
 
     private LocalDateTime createdAt;
 
+    @Column(nullable = false)
+    private String role;
+
+
     @Builder
     public Member(String email, String userName, String password) {
-        this.token = TokenGenerator.randomCharacterWithPrefix(MEMBER_PREFIX);
+        this.userToken = TokenGenerator.randomCharacterWithPrefix(MEMBER_PREFIX);
         this.email = email;
         this.userName = userName;
         this.password = password;
         this.createdAt = LocalDateTime.now();
+        this.role = Role.USER.getValue();
     }
 }

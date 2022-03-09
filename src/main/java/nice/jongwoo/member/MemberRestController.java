@@ -35,7 +35,7 @@ public class MemberRestController {
         Map<String, Object> response = new HashMap<>();
         response.put("message", "회원가입이 완료되었습니다.");
 
-        return ResponseEntity.created(new URI("/api/v1/members/" + savedMember.getToken())).body(response);
+        return ResponseEntity.created(new URI("/api/v1/members/" + savedMember.getUserToken())).body(response);
     }
 
     //R
