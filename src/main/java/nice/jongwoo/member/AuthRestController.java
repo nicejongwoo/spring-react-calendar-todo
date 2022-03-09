@@ -2,7 +2,11 @@ package nice.jongwoo.member;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import nice.jongwoo.config.JwtTokenUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,16 +20,32 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-@RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/members")
-public class MemberRestController {
+@RequestMapping("/api/v1/auth")
+@RequiredArgsConstructor
+public class AuthRestController {
 
+    private final JwtTokenUtils jwtTokenUtils;
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
 
-    //C
-    @PostMapping
+    @PostMapping("/signin")
+    public ResponseEntity<Member> login(@RequestBody @Valid MemberRequest request) {
+        try {
+
+            Member member = memberService.getByCredentials(request);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.set(HttpHeaders.AUTHORIZATION, jwtTokenUtils.generateAccessToken(member));
+            return ResponseEntity.ok()
+                .headers(headers)
+                .body(member);
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
+    @PostMapping("/signup")
     public ResponseEntity<?> registerMember(@RequestBody @Valid MemberRequest memberRequest) throws URISyntaxException {
 
         memberRequest.setPassword(passwordEncoder.encode(memberRequest.getPassword()));
@@ -38,7 +58,5 @@ public class MemberRestController {
         return ResponseEntity.created(new URI("/api/v1/members/" + savedMember.getUserToken())).body(response);
     }
 
-    //R
-    //U
-    //D
+
 }

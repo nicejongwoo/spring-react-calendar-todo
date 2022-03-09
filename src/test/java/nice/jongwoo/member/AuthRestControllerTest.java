@@ -10,34 +10,39 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.nio.charset.StandardCharsets;
 
+import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ActiveProfiles(value = {"test"})
-@WebMvcTest(controllers = LoginRestController.class)
+@WebMvcTest(controllers = AuthRestController.class)
 @AutoConfigureMockMvc(addFilters = false)
-class LoginRestControllerTest extends CommonRestControllerMock {
+class AuthRestControllerTest extends CommonRestControllerMock {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
-    private MemberServiceImpl memberService;
-
     @Autowired
     private ObjectMapper objectMapper;
 
-    @DisplayName("Test Login Success")
+    @MockBean
+    private MemberServiceImpl memberService;
+
+    @MockBean
+    private PasswordEncoder passwordEncoder;
+
+    @DisplayName("controller test: 로그인성공")
     @Test
     void givenEmailPassword_whenLogin_thenSuccessLogin() throws Exception {
         //given - precondition ro setup
@@ -59,7 +64,7 @@ class LoginRestControllerTest extends CommonRestControllerMock {
         headers.set(HttpHeaders.AUTHORIZATION, jwtTokenUtils.generateAccessToken(member));
 
         //when - action or the behaviour that we are going test
-        ResultActions response = mockMvc.perform(post("/api/v1/signin")
+        ResultActions response = mockMvc.perform(post("/api/v1/auth/signin")
             .contentType(MediaType.APPLICATION_JSON)
             .headers(headers)
             .characterEncoding(StandardCharsets.UTF_8)
@@ -73,4 +78,35 @@ class LoginRestControllerTest extends CommonRestControllerMock {
 
     }
 
+
+    @WithMockUser
+    @DisplayName("controller test: 회원가입")
+    @Test
+    void givenMemberRequest_whenRegisterMember_thenReturnSuccess() throws Exception {
+        String email = "tester@gmail.com";
+        String userName = "tester";
+        String password = "123456789";
+
+        //given - precondition ro setup
+        MemberRequest request = new MemberRequest();
+        request.setEmail(email);
+        request.setUserName(userName);
+        request.setPassword(passwordEncoder.encode(password));
+
+        Member member = MemberRequest.toEntity(request);
+
+        given(memberService.registerMember(any())).willReturn(member);
+
+        //when - action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(post("/api/v1/auth/signup")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request)))
+            ;
+
+        //then - verify the output
+        response.andDo(print())
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.message", is("회원가입이 완료되었습니다.")));
+
+    }
 }
