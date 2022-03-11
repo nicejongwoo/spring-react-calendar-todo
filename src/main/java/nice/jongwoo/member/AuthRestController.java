@@ -47,15 +47,18 @@ public class AuthRestController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerMember(@RequestBody @Valid MemberRequest memberRequest) throws URISyntaxException {
-
-        memberRequest.setPassword(passwordEncoder.encode(memberRequest.getPassword()));
-        Member member = MemberRequest.toEntity(memberRequest);
-        Member savedMember = memberService.registerMember(member);
-
         Map<String, Object> response = new HashMap<>();
-        response.put("message", "회원가입이 완료되었습니다.");
 
-        return ResponseEntity.created(new URI("/api/v1/members/" + savedMember.getUserToken())).body(response);
+        try{
+            memberRequest.setPassword(passwordEncoder.encode(memberRequest.getPassword()));
+            Member member = MemberRequest.toEntity(memberRequest);
+            Member savedMember = memberService.registerMember(member);
+            response.put("message", "회원가입이 완료되었습니다.");
+            return ResponseEntity.created(new URI("/api/v1/members/" + savedMember.getUserToken())).body(response);
+        }catch (Exception e){
+            response.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 
 

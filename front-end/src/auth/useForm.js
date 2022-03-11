@@ -14,27 +14,12 @@ function useForm({ initialValues, onSubmit, validate }){
         setErrors({ ...errors, [name]: ''})
     }
 
-    const onSubmitPromise = (value) => {
-        return new Promise((resolve, reject) => {
-            console.log('value??? ', value)
-            if(value) {
-                resolve('OK')
-            }else {
-                reject('FAIL')
-            }
-        })
-    }
-
     const handleSubmit = (event) => {
         // const { name } = event.target
         event.preventDefault()
         setSubmitting(true)
         setErrors(validate(values))
-
-        onSubmit(values, errors)
-            .then(()=>{
-                setSubmitting(false)
-            })
+        onSubmit(values)
     }
 
     useEffect(() => {
@@ -49,6 +34,7 @@ function useForm({ initialValues, onSubmit, validate }){
         submitting,
         handleChange,
         handleSubmit,
+        setSubmitting,
     }
 }
 

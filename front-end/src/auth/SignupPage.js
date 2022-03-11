@@ -1,31 +1,30 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import Alert from "../components/Alert";
 import ButtonWithProgress from "../components/ButtonWithProgess";
 import Input from "../components/Input";
+import { signup } from "./AuthService";
 import useForm from "./useForm";
 import validate from "./validate";
 
 function Signup () {
 
     const initialValues = { email: '', userName: '', password: '' }
+    const navigate = useNavigate();
 
-    const { values, errors, submitting, handleChange, handleSubmit } = useForm({
+    const { values, errors, submitting, handleChange, handleSubmit, setSubmitting } = useForm({
         initialValues: initialValues,
-        onSubmit: (values, errors) => {
-            // console.log('onSubmit values: ', values, errors)
-            // console.log('submitting:: ', submitting)
-            // setPending(true)
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    //TODO: sing up request
-                    resolve('OK')
-                    // reject('FAIL')
-                }, 1000)
-            }).then((r)=>{
-                console.log('r: ', r)
-            }).catch((e) => {
-                console.log('e: ', e)
+        onSubmit: (values) => {
+            signup(values).then((response) => {
+                console.log('response:: ', response)
+                toast.success(response.message)
+                navigate('/signin')
+            }).catch((response) => {
+                // console.log('response:: ', response)
+                toast.error(response.message)
+                setSubmitting(false)
             })
-
         },
         validate,
     })
@@ -86,7 +85,7 @@ function Signup () {
                     />
                 </div>
             </form>
-
+            <Alert />
         </div>
     )
 }
