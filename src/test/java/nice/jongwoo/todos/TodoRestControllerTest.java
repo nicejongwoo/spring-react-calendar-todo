@@ -1,9 +1,11 @@
 package nice.jongwoo.todos;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import nice.jongwoo.util.CommonRestControllerMock;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -25,8 +27,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ActiveProfiles(value = {"test"})
-@WebMvcTest
-class TodoRestControllerTest {
+@WebMvcTest(TodoRestController.class)
+@AutoConfigureMockMvc(addFilters = false)
+class TodoRestControllerTest extends CommonRestControllerMock {
 
     @Autowired
     private MockMvc mockMvc;

@@ -1,27 +1,12 @@
-const API_BASE_URL = "/api/v1/todos"
+import { API_BASE_URL, headers, request } from "../../services/RequestService"
 
-const headers = new Headers({
-    'Content-Type': 'application/json',
-})
+const TODO_BASE_URL = API_BASE_URL + '/todos'
 
-const request = (options) => {
-
-    return fetch(options.url, options).then((response) =>
-        response.json().then((json) => {
-            if(!response.ok){
-                return Promise.reject(json);
-            }
-            return json;
-        })
-    ).catch((error) => {
-        return Promise.reject(error);
-    })
-}
 
 export function createTodo(todoData) {
     return request({
         headers: headers,
-        url: API_BASE_URL,
+        url: TODO_BASE_URL,
         method: 'POST',
         body: JSON.stringify(todoData),
     })
@@ -34,7 +19,7 @@ export function createTodo(todoData) {
 export function getTodoListByTodoDate(todoDate) {
     return request({
         headers: headers,
-        url: API_BASE_URL + '/' + todoDate,
+        url: TODO_BASE_URL + '/' + todoDate,
         method: 'GET',
     })
 }
@@ -42,7 +27,7 @@ export function getTodoListByTodoDate(todoDate) {
 export function getTodoListMonthly(startDate, endDate) {
     return request({
         headers: headers,
-        url: API_BASE_URL + '?startDate=' + startDate + '&endDate=' + endDate,
+        url: TODO_BASE_URL + '/?startDate=' + startDate + '&endDate=' + endDate,
         method: 'GET',
     })
 }
@@ -50,7 +35,7 @@ export function getTodoListMonthly(startDate, endDate) {
 export function deleteTodoApi(token) {
     return request({
         headers: headers,
-        url: API_BASE_URL + '/todo/' + token,
+        url: TODO_BASE_URL + '/todo/' + token,
         method: 'DELETE',
     })
 }
@@ -58,7 +43,7 @@ export function deleteTodoApi(token) {
 export function doneTodoApi(token) {
     return request({
         headers: headers,
-        url: API_BASE_URL + '/todo/' + token + '/done',
+        url: TODO_BASE_URL + '/todo/' + token + '/done',
         method: 'PUT',
     })
 }
@@ -66,7 +51,7 @@ export function doneTodoApi(token) {
 export function undoneTodoApi(token) {
     return request({
         headers: headers,
-        url: API_BASE_URL + '/todo/' + token + '/undone',
+        url: TODO_BASE_URL + '/todo/' + token + '/undone',
         method: 'PUT',
     })
 }
