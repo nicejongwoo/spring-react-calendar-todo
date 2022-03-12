@@ -4,7 +4,7 @@ function validate(values) {
     const regEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
     const regPassword = /(?=.*\d)(?=.*[a-z]).{8,}/
 
-    if(!values.email) {
+    if(values.email !== undefined && !values.email) {
         errors.email = '이메일을 입력해주세요'
     }else {
         if(regEmail.test(values.email) !== true) {
@@ -12,12 +12,13 @@ function validate(values) {
         }
     }
 
-    if(!values.userName) {
+    if(values.userName !== undefined && !values.userName) {
+
         errors.userName = '이름을 입력해주세요'
     }else {
     }
 
-    if(!values.password) {
+    if(values.password !== undefined && !values.password) {
         errors.password = '비밀번호를 입력해주세요'
     }else {
         if(regPassword.test(values.password) !== true){

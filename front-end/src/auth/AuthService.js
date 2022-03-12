@@ -10,3 +10,12 @@ export function signup(data) {
         body: JSON.stringify(data),
     })
 }
+
+export function signin(data) {
+    return request({
+        headers: headers,
+        url: AUTH_BASE_URL + '/signin',
+        method: 'POST',
+        body: JSON.stringify(data),
+    })
+}

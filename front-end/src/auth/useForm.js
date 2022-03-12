@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 
 //values, errors, submitting, handleChange, handleSubmit
 
-function useForm({ initialValues, onSubmit, validate }){
-// function useForm({ initialValues, validate }){
+function useForm({ initialValues, validate }){
     const [values, setValues] = useState(initialValues)
     const [errors, setErrors] = useState({})
     const [submitting, setSubmitting] = useState(false)
@@ -16,10 +15,10 @@ function useForm({ initialValues, onSubmit, validate }){
 
     const handleSubmit = (event) => {
         // const { name } = event.target
+        console.log('클릭')
         event.preventDefault()
         setSubmitting(true)
         setErrors(validate(values))
-        onSubmit(values)
     }
 
     useEffect(() => {
@@ -34,7 +33,6 @@ function useForm({ initialValues, onSubmit, validate }){
         submitting,
         handleChange,
         handleSubmit,
-        setSubmitting,
     }
 }
 

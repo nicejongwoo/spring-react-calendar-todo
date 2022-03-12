@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
-import Signin from "../auth/Signin";
+import SigninPage from "../auth/SigninPage";
 import SignupPage from "../auth/SignupPage";
 import CalendarPage from "../calendar/CalendarPage"
 import TopMenu from "../components/TopMenu";
@@ -15,7 +15,7 @@ function AppRouter () {
                         <Route path="/" exact element={<HomePage/>} />
                         <Route path="/calendar" exact element={<CalendarPage/>} />
                         <Route path="/signup" exact element={<SignupPage/>} />
-                        <Route path="/signin" exact element={<Signin/>} />
+                        <Route path="/signin" exact element={<SigninPage/>} />
                     </Routes>
                 </div>
             </Router>

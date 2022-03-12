@@ -30,7 +30,8 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public Member getByCredentials(MemberRequest request) {
         Member member = memberRepository.findByEmail(request.getEmail()).orElseThrow(
-            () -> new UsernameNotFoundException(String.format("$s 로 가입된 회원이 없습니다.", request.getEmail()))
+//            () -> new UsernameNotFoundException(String.format("%s 로 가입된 회원이 없습니다.", request.getEmail()))
+            () -> new UsernameNotFoundException("회원 정보가 일치하지 않습니다.")
         );
 
         if (!passwordEncoder.matches(request.getPassword(), member.getPassword())) {

@@ -30,18 +30,23 @@ public class AuthRestController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/signin")
-    public ResponseEntity<Member> login(@RequestBody @Valid MemberRequest request) {
+    public ResponseEntity<?> login(@RequestBody @Valid MemberRequest request) {
+        Map<String, Object> response = new HashMap<>();
         try {
 
             Member member = memberService.getByCredentials(request);
 
             HttpHeaders headers = new HttpHeaders();
             headers.set(HttpHeaders.AUTHORIZATION, jwtTokenUtils.generateAccessToken(member));
+
+            response.put("message", "로그인 되었습니다");
+
             return ResponseEntity.ok()
                 .headers(headers)
-                .body(member);
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+                .body(response);
+        } catch (Exception e) {
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
 
