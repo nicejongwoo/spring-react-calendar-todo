@@ -20,7 +20,8 @@ public class JwtTokenUtils {
             .setSubject(String.format("%s,%s,%s", member.getEmail(), member.getUserToken(), member.getUserName())) //payload sub
             .setIssuer(jwtIssuer) //payload iss
             .setIssuedAt(new Date()) //payload iat
-            .setExpiration(new Date(System.currentTimeMillis() + 60*60*1000)) //payload exp: 1 hour
+            .setExpiration(new Date(System.currentTimeMillis() + 15*60*1000)) //payload exp: 15 minute
+//            .setExpiration(new Date(System.currentTimeMillis() + 1*60*1000)) //payload exp: 1 minute for test
             .signWith(SignatureAlgorithm.HS512, jwtSecret) //header sign
             .compact();
     }

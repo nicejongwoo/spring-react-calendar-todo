@@ -3,7 +3,7 @@ import Calendar from "./calendar";
 import { useEffect, useState} from 'react'
 import Alert from "../components/Alert";
 
-function CalendarPage() {
+function CalendarPage({accessToken}) {
 
     const [ clickedEvent, setClickedEvent ] = useState({})
     const [ isOpenPopup, setIsOpenPopup ] = useState(false)
@@ -13,6 +13,8 @@ function CalendarPage() {
         setClickedEvent(JSON.parse(values))
     }
 
+    console.log('token::: ', accessToken)
+
     useEffect(() => {
         if(clickedEvent.formattedDay) setIsOpenPopup(true)
         if(isSaved) setIsSaved(false)
@@ -20,9 +22,14 @@ function CalendarPage() {
 
     return (
         <div className="calendar-page">
-            <Calendar getClickedInfo={getClickedInfo} isSaved={isSaved} />
+            <Calendar getClickedInfo={getClickedInfo} isSaved={isSaved} accessToken={accessToken} />
             {clickedEvent.formattedDay && isOpenPopup &&
-                <TodoPage clickedEvent={clickedEvent} setIsOpenPopup={setIsOpenPopup} setIsSaved={setIsSaved} />}
+                <TodoPage
+                    clickedEvent={clickedEvent}
+                    setIsOpenPopup={setIsOpenPopup}
+                    setIsSaved={setIsSaved}
+                    accessToken={accessToken}
+                />}
             <Alert/>
         </div>
     )

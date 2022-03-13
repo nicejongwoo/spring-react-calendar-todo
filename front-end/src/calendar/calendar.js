@@ -5,7 +5,7 @@ import { getTodoListMonthly } from './todo/TodoService'
 import './calendar.css'
 
 
-const Calendar = ({ getClickedInfo, isSaved }) => {
+const Calendar = ({ getClickedInfo, isSaved, accessToken }) => {
 
     const [ currentDate, setCurrrentDate ] = useState(new Date())
     const [ markToday, setMarkToday ] = useState(new Date())
@@ -40,7 +40,9 @@ const Calendar = ({ getClickedInfo, isSaved }) => {
         const formattedStartDate = format(monthStart, dateFormat)
         const formattedEndDate = format(monthEnd, dateFormat)
 
-        getTodoListMonthly(formattedStartDate, formattedEndDate).then((response) => {
+        console.log('????', accessToken)
+
+        getTodoListMonthly(formattedStartDate, formattedEndDate, accessToken).then((response) => {
             // console.log('getTodoListMonthly response:: ', response)
             setTodos(response.todos)
             setLoading(false)

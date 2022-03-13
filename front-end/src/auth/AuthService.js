@@ -1,7 +1,11 @@
 import { toast } from "react-toastify";
+import Cookies from "universal-cookie";
 import { API_BASE_URL, headers, request } from "../services/RequestService";
 
 const AUTH_BASE_URL = API_BASE_URL + '/auth'
+const REFRESH_TOKEN_NAME = 'refreshToken'
+
+const cookies = new Cookies()
 
 export function signup(data) {
     return request({
@@ -22,6 +26,22 @@ export function signin(data) {
 }
 
 export function signout() {
-    toast.success('로그아웃 되었습니다.')
-    // window.localStorage.setItem('logout', Date.now())
+    window.localStorage.setItem('logout', Date.now())
+    cookies.remove(REFRESH_TOKEN_NAME)
 }
+
+// export function setRefreshTokeToCookie(refreshToken) {
+//     cookies.set(REFRESH_TOKEN_NAME, refreshToken, { sameSite: 'strict' })
+// }
+
+// export function getAccessToken() {
+//     const refreshToken = cookies.get(REFRESH_TOKEN_NAME)
+//     if(refreshToken) {
+//         return request({
+//             headers: headers,
+//             url: AUTH_BASE_URL + '/signin',
+//             method: 'POST',
+//             body: JSON.stringify(data),
+//         })
+//     }
+// }

@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import logo from '../assets/logo.png'
 
-export default function TopMenu ({ authenticated, handleLogout }) {
+export default function TopMenu ({ state, handleLogout }) {
+
+    const { authenticated } = state
 
     return (
         <div className="navbar navbar-expand-md navbar-dark bd-navbar bg-dark">

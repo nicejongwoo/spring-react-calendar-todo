@@ -6,13 +6,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from "react";
 
 
-function TodoForm({ clickedEvent, completeSave }) {
+function TodoForm({ clickedEvent, completeSave, accessToken }) {
     const [ clickedDate, setClickedDate ] = useState('')
 
     const { values, errors, submitting, handleChange, handleSubmit } = useForm({
         initialValues: { title: '', todoDate: '' },
         onSubmit: (values) => {
-            createTodo(values).then((response) => {
+            createTodo(values, accessToken).then((response) => {
                 completeSave(true)
                 toast.success(response.message)
             });

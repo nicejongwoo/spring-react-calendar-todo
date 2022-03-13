@@ -3,7 +3,8 @@ import { API_BASE_URL, headers, request } from "../../services/RequestService"
 const TODO_BASE_URL = API_BASE_URL + '/todos'
 
 
-export function createTodo(todoData) {
+export function createTodo(todoData, accessToken) {
+    headers.set('Authorization', 'Bearer '+ accessToken)
     return request({
         headers: headers,
         url: TODO_BASE_URL,
@@ -16,7 +17,8 @@ export function createTodo(todoData) {
     // })
 }
 
-export function getTodoListByTodoDate(todoDate) {
+export function getTodoListByTodoDate(todoDate, accessToken) {
+    headers.set('Authorization', 'Bearer '+ accessToken)
     return request({
         headers: headers,
         url: TODO_BASE_URL + '/' + todoDate,
@@ -24,7 +26,8 @@ export function getTodoListByTodoDate(todoDate) {
     })
 }
 
-export function getTodoListMonthly(startDate, endDate) {
+export function getTodoListMonthly(startDate, endDate, accessToken) {
+    headers.set('Authorization', 'Bearer '+ accessToken)
     return request({
         headers: headers,
         url: TODO_BASE_URL + '?startDate=' + startDate + '&endDate=' + endDate,
@@ -32,7 +35,8 @@ export function getTodoListMonthly(startDate, endDate) {
     })
 }
 
-export function deleteTodoApi(token) {
+export function deleteTodoApi(token, accessToken) {
+    headers.set('Authorization', 'Bearer '+ accessToken)
     return request({
         headers: headers,
         url: TODO_BASE_URL + '/todo/' + token,
@@ -40,7 +44,8 @@ export function deleteTodoApi(token) {
     })
 }
 
-export function doneTodoApi(token) {
+export function doneTodoApi(token, accessToken) {
+    headers.set('Authorization', 'Bearer '+ accessToken)
     return request({
         headers: headers,
         url: TODO_BASE_URL + '/todo/' + token + '/done',
@@ -48,7 +53,8 @@ export function doneTodoApi(token) {
     })
 }
 
-export function undoneTodoApi(token) {
+export function undoneTodoApi(token, accessToken) {
+    headers.set('Authorization', 'Bearer '+ accessToken)
     return request({
         headers: headers,
         url: TODO_BASE_URL + '/todo/' + token + '/undone',
