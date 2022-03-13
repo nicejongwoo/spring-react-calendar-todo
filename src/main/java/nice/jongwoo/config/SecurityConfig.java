@@ -3,6 +3,7 @@ package nice.jongwoo.config;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -40,8 +41,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //endpoint에 대한 권한
         http.authorizeRequests()
-            .antMatchers("/**", "/api/v1/members", "/api/v1/signin").permitAll()
-            .antMatchers("/api/v1/todos/**").authenticated();
+            .antMatchers("/api/v1/auth/**", "/h2-console/**").permitAll()
+            .antMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
+            .anyRequest().authenticated()
+            ;
+//            .antMatchers("/api/v1/todos**").authenticated()
+//            .antMatchers("/api/v1/auth**").permitAll();
 
         //JWT Custom Filter 추가
         http.addFilterBefore(

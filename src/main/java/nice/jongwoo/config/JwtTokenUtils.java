@@ -17,9 +17,17 @@ public class JwtTokenUtils {
 
     public String generateAccessToken(Member member) {
         return Jwts.builder()
-            .setSubject(String.format("%s,%s", member.getUserToken(), member.getUserName())) //payload sub
+            .setSubject(String.format("%s,%s,%s", member.getEmail(), member.getUserToken(), member.getUserName())) //payload sub
             .setIssuer(jwtIssuer) //payload iss
             .setIssuedAt(new Date()) //payload iat
+            .setExpiration(new Date(System.currentTimeMillis() + 60*60*1000)) //payload exp: 1 hour
+            .signWith(SignatureAlgorithm.HS512, jwtSecret) //header sign
+            .compact();
+    }
+
+    public String generateRefreshToken() {
+        return Jwts.builder()
+            .setIssuedAt(new Date())
             .setExpiration(new Date(System.currentTimeMillis() + 7*24*60*60*1000)) //payload exp: 1 week
             .signWith(SignatureAlgorithm.HS512, jwtSecret) //header sign
             .compact();
@@ -33,12 +41,20 @@ public class JwtTokenUtils {
         return claims.getSubject().split(",")[0];
     }
 
-    public String getUserName(String token) {
+    public String getUserToken(String token) {
         Claims claims = Jwts.parser().
             setSigningKey(jwtSecret)
             .parseClaimsJws(token)
             .getBody();
         return claims.getSubject().split(",")[1];
+    }
+
+    public String getUserName(String token) {
+        Claims claims = Jwts.parser().
+            setSigningKey(jwtSecret)
+            .parseClaimsJws(token)
+            .getBody();
+        return claims.getSubject().split(",")[2];
     }
 
     public boolean validate(String token) {
