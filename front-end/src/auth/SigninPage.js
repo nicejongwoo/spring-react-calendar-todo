@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Alert from "../components/Alert";
 import ButtonWithProgress from "../components/ButtonWithProgess";
 import Input from "../components/Input";
 import { signin } from "./AuthService";
@@ -9,7 +8,7 @@ import useForm from "./useForm";
 import validate from "./validate";
 
 
-function Signin () {
+function Signin ({ getToken }) {
 
     const initialValues = { email: '', password: '' }
     const navigate = useNavigate();
@@ -20,15 +19,13 @@ function Signin () {
     })
 
     useEffect(() => {
-        console.log('errors: ', Object.keys(errors))
-        console.log('submitting, errors:: ', submitting, Object.keys(errors).length === 0)
-
         if(submitting && Object.keys(errors).length === 0) {
             signin(values).then((response) => {
+                const token = {'accessToken': response.accessToken, 'refreshToken': response.refreshToken }
+                getToken(token)
                 toast.success(response.message)
                 navigate('/')
             }).catch((response) => {
-                console.log('message: ', response)
                 toast.error(response.message)
             })
         }

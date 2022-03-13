@@ -27,7 +27,7 @@ export function getTodoListByTodoDate(todoDate) {
 export function getTodoListMonthly(startDate, endDate) {
     return request({
         headers: headers,
-        url: TODO_BASE_URL + '/?startDate=' + startDate + '&endDate=' + endDate,
+        url: TODO_BASE_URL + '?startDate=' + startDate + '&endDate=' + endDate,
         method: 'GET',
     })
 }
