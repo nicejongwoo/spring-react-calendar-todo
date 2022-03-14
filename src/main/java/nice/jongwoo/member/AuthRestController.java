@@ -37,9 +37,13 @@ public class AuthRestController {
             Member member = memberService.getByCredentials(request);
 
             HttpHeaders headers = new HttpHeaders();
-            headers.set(HttpHeaders.AUTHORIZATION, jwtTokenUtils.generateAccessToken(member));
+            String accessToken = jwtTokenUtils.generateAccessToken(member);
+            String refreshToken = jwtTokenUtils.generateRefreshToken();
+            headers.set(HttpHeaders.AUTHORIZATION, accessToken);
 
             response.put("message", "로그인 되었습니다");
+            response.put("accessToken", accessToken);
+            response.put("refreshToken", refreshToken);
 
             return ResponseEntity.ok()
                 .headers(headers)

@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import logo from '../assets/logo.png'
 
-export default function TopMenu () {
+export default function TopMenu ({ state, handleLogout }) {
+
+    const { authenticated } = state
+
     return (
         <div className="navbar navbar-expand-md navbar-dark bd-navbar bg-dark">
             <nav className="container-xxl flex-wrap flex-md-nowrap">
@@ -11,22 +14,31 @@ export default function TopMenu () {
 
                 <div className="collapse navbar-collapse">
                     <ul className="navbar-nav flex-row flex-wrap bd-navbar-nav pt-2 py-md-0">
-                        <li className="nav-item col-6 col-md-auto">
+                        {authenticated && <li className="nav-item col-6 col-md-auto">
                             <Link to="/calendar" className="nav-link">Calendar</Link>
-                        </li>
+                        </li>}
+                        {authenticated && <li className="nav-item col-6 col-md-auto">
+                            <Link to="/counter" className="nav-link">Counter</Link>
+                        </li>}
                     </ul>
 
                     <ul className="navbar-nav flex-row flex-wrap ms-md-auto">
-                        <li className="nav-item col-6 col-md-auto">
+                        {!authenticated && <li className="nav-item col-6 col-md-auto">
                             <Link to="/signup" className="nav-link">
                                 Sign Up
                             </Link>
-                        </li>
-                        <li className="nav-item col-6 col-md-auto">
+                        </li>}
+                        {!authenticated && <li className="nav-item col-6 col-md-auto">
                             <Link to="/signin" className="nav-link">
                                 Login
                             </Link>
-                        </li>
+                        </li>}
+
+                        {authenticated && <li className="nav-item col-6 col-md-auto">
+                            <a href="#" onClick={handleLogout} className="nav-link">
+                                Logout
+                            </a>
+                        </li>}
                     </ul>
                 </div>
             </nav>

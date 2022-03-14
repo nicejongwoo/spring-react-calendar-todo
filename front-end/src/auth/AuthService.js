@@ -1,6 +1,11 @@
+import { toast } from "react-toastify";
+import Cookies from "universal-cookie";
 import { API_BASE_URL, headers, request } from "../services/RequestService";
 
 const AUTH_BASE_URL = API_BASE_URL + '/auth'
+const REFRESH_TOKEN_NAME = 'refreshToken'
+
+const cookies = new Cookies()
 
 export function signup(data) {
     return request({
@@ -19,3 +24,9 @@ export function signin(data) {
         body: JSON.stringify(data),
     })
 }
+
+export function signout() {
+    window.localStorage.setItem('logout', Date.now())
+    cookies.remove(REFRESH_TOKEN_NAME)
+}
+

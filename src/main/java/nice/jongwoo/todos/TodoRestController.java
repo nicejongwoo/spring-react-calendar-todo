@@ -21,7 +21,7 @@ public class TodoRestController {
     private final TodoFacade todoFacade;
 
     //C
-    @PostMapping
+    @PostMapping("")
     public ResponseEntity<?> registerTodo(@RequestBody @Valid TodoRequest todoRequest) throws URISyntaxException {
         log.debug("todoRequest:: {}", todoRequest);
         Todo todo = TodoRequest.toEntity(todoRequest);
@@ -34,7 +34,7 @@ public class TodoRestController {
     }
 
     //R
-    @GetMapping
+    @GetMapping("")
     public ResponseEntity<?> getTodoListMonthly(@RequestParam String startDate,
                                                 @RequestParam String endDate) {
         List<Todo> todoList = todoFacade.findAllMonthly(startDate, endDate);

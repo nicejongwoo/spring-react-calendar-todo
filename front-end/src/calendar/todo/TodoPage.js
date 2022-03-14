@@ -4,7 +4,7 @@ import TodoForm from './TodoForm'
 import TodoList from './TodoList'
 import './Todo.css'
 
-function TodoPage({ clickedEvent, setIsOpenPopup, setIsSaved }) {
+function TodoPage({ clickedEvent, setIsOpenPopup, setIsSaved, accessToken }) {
 
     const [ todosByDate, setTodosByDate ] = useState([])
     const [ saved, setSaved ] = useState(false)
@@ -34,7 +34,7 @@ function TodoPage({ clickedEvent, setIsOpenPopup, setIsSaved }) {
 
     const getTodo = () => {
         // console.log("getTodo")
-        getTodoListByTodoDate(clickedEvent.formattedDay).then((response) => {
+        getTodoListByTodoDate(clickedEvent.formattedDay, accessToken).then((response) => {
             // console.log('getTodoListByTodoDate response:: ', response)
             setTodosByDate(response.todos)
             return false;
@@ -64,9 +64,13 @@ function TodoPage({ clickedEvent, setIsOpenPopup, setIsSaved }) {
                     <button className="close-form" onClick={closeForm}>&times;</button>
                 </div>
                 <div className="todo-body row">
-                    <TodoForm clickedEvent={clickedEvent} completeSave={completeSave} />
+                    <TodoForm clickedEvent={clickedEvent} completeSave={completeSave} accessToken={accessToken} />
 
-                    {(todosByDate.length > 0 || saved) && <TodoList todosByDate={todosByDate} completeAction={completeAction}/>}
+                    {(todosByDate.length > 0 || saved) && <TodoList
+                        todosByDate={todosByDate}
+                        completeAction={completeAction}
+                        accessToken={accessToken}
+                    />}
                 </div>
             </div>
         </div>

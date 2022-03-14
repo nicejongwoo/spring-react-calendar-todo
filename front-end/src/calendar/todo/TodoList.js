@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import { deleteTodoApi, doneTodoApi, undoneTodoApi } from "./TodoService"
 
-function TodoList({ todosByDate, completeAction }) {
+function TodoList({ todosByDate, completeAction, accessToken }) {
 
     const todos = []
 
@@ -12,7 +12,7 @@ function TodoList({ todosByDate, completeAction }) {
 
     const deleteTodo = (token, e) => {
         // console.log('deleteTodo:: ', token)
-        deleteTodoApi(token).then((response) => {
+        deleteTodoApi(token, accessToken).then((response) => {
             thenApi(response)
         });
     }
@@ -22,14 +22,14 @@ function TodoList({ todosByDate, completeAction }) {
 
         if(currentStatus === 'false') {
             //done처리 기존: false -> 변경: true
-            doneTodoApi(token).then((response) => {
+            doneTodoApi(token, accessToken).then((response) => {
                 thenApi(response)
             })
         }
 
         if(currentStatus === 'true') {
             //undone처리 기존: true -> 변경: false
-            undoneTodoApi(token).then((response) => {
+            undoneTodoApi(token, accessToken).then((response) => {
                 thenApi(response)
             })
         }
