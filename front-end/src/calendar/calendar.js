@@ -40,8 +40,6 @@ const Calendar = ({ getClickedInfo, isSaved, accessToken }) => {
         const formattedStartDate = format(monthStart, dateFormat)
         const formattedEndDate = format(monthEnd, dateFormat)
 
-        console.log('????', accessToken)
-
         getTodoListMonthly(formattedStartDate, formattedEndDate, accessToken).then((response) => {
             // console.log('getTodoListMonthly response:: ', response)
             setTodos(response.todos)

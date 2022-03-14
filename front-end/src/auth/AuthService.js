@@ -30,18 +30,3 @@ export function signout() {
     cookies.remove(REFRESH_TOKEN_NAME)
 }
 
-// export function setRefreshTokeToCookie(refreshToken) {
-//     cookies.set(REFRESH_TOKEN_NAME, refreshToken, { sameSite: 'strict' })
-// }
-
-// export function getAccessToken() {
-//     const refreshToken = cookies.get(REFRESH_TOKEN_NAME)
-//     if(refreshToken) {
-//         return request({
-//             headers: headers,
-//             url: AUTH_BASE_URL + '/signin',
-//             method: 'POST',
-//             body: JSON.stringify(data),
-//         })
-//     }
-// }

@@ -15,7 +15,7 @@ function useForm({ initialValues, validate }){
 
     const handleSubmit = (event) => {
         // const { name } = event.target
-        console.log('클릭')
+        // console.log('클릭')
         event.preventDefault()
         setSubmitting(true)
         setErrors(validate(values))

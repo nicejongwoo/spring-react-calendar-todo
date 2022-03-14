@@ -13,8 +13,6 @@ function CalendarPage({accessToken}) {
         setClickedEvent(JSON.parse(values))
     }
 
-    console.log('token::: ', accessToken)
-
     useEffect(() => {
         if(clickedEvent.formattedDay) setIsOpenPopup(true)
         if(isSaved) setIsSaved(false)

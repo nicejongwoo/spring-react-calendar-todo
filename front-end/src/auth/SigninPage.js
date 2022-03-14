@@ -1,9 +1,9 @@
-import { useEffect, useReducer } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import ButtonWithProgress from "../components/ButtonWithProgess";
 import Input from "../components/Input";
-import { setRefreshTokeToCookie, signin } from "./AuthService";
+import { signin } from "./AuthService";
 import useForm from "./useForm";
 import validate from "./validate";
 
@@ -23,7 +23,6 @@ function Signin ({ getToken }) {
             signin(values).then((response) => {
                 const token = {'accessToken': response.accessToken, 'refreshToken': response.refreshToken }
                 getToken(token)
-                // setRefreshTokeToCookie(response.refreshToken)
                 toast.success(response.message)
                 navigate('/')
             }).catch((response) => {

@@ -17,6 +17,9 @@ export default function TopMenu ({ state, handleLogout }) {
                         {authenticated && <li className="nav-item col-6 col-md-auto">
                             <Link to="/calendar" className="nav-link">Calendar</Link>
                         </li>}
+                        {authenticated && <li className="nav-item col-6 col-md-auto">
+                            <Link to="/counter" className="nav-link">Counter</Link>
+                        </li>}
                     </ul>
 
                     <ul className="navbar-nav flex-row flex-wrap ms-md-auto">
