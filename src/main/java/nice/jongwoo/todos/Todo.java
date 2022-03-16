@@ -5,15 +5,19 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import nice.jongwoo.common.TokenGenerator;
+import nice.jongwoo.common.model.Auditable;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "todo")
-public class Todo {
+public class Todo extends Auditable<String> implements Serializable {
 
     private static final String TODO_PREFIX = "todo_";
 
@@ -27,10 +31,6 @@ public class Todo {
     private String todoDate;
     private boolean done;
 
-    private String createdBy;
-    private LocalDateTime createdAt;
-    private String modifiedBy;
-    private LocalDateTime modifiedAt;
 
     @Builder
     public Todo(String title, String todoDate) {
