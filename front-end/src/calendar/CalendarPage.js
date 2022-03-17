@@ -1,7 +1,6 @@
 import TodoPage from "./todo/TodoPage";
 import Calendar from "./calendar";
 import { useEffect, useState} from 'react'
-import Alert from "../components/Alert";
 
 function CalendarPage({accessToken}) {
 
@@ -28,7 +27,6 @@ function CalendarPage({accessToken}) {
                     setIsSaved={setIsSaved}
                     accessToken={accessToken}
                 />}
-            <Alert/>
         </div>
     )
 }
