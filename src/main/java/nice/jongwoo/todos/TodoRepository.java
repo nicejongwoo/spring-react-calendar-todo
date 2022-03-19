@@ -16,4 +16,6 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     List<Todo> findAllByTodoDateBetweenStartDateAndEndDate(@Param("startDate") String startDate, @Param("endDate") String endDate);
 
     List<Todo> findAllByTodoDateBetweenAndCreatedBy(String startDate, String endDate, String email);
+
+    List<Todo> findByTodoDateAndCreatedBy(String todoDate, String email);
 }

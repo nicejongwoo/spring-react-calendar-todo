@@ -114,6 +114,20 @@ class TodoServiceImplTest {
         assertThat(todoList.size()).isEqualTo(2);
     }
 
+    @DisplayName("service test: 선택된 날짜에 해당하는 특정 유저의 투두 목록 조회")
+    @Test
+    void givenTodoListEmail_whenFindAllByTodoDate_thenTodoListSelectedDate() {
+        //given - precondition ro setup
+        String email = "test@email.com";
+        given(todoRepository.findByTodoDateAndCreatedBy(TODO_DATE, email)).willReturn(List.of(todo, todo2));
+
+        //when - action or the behaviour that we are going test
+        List<Todo> todoList = todoService.findAllByTodoDateAndEmail(TODO_DATE, email);
+
+        //then - verify the output
+        assertThat(todoList.size()).isEqualTo(2);
+    }
+
     @DisplayName("service test: 투두토큰으로 조회")
     @Test
     void givenTodo_whenFindByTodoToken_thenTodo() {

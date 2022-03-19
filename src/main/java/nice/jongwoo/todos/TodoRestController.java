@@ -54,7 +54,9 @@ public class TodoRestController {
 
     @GetMapping("/{todoDate}")
     public ResponseEntity<?> getTodoListBySelectedDate(@PathVariable String todoDate) {
-        List<Todo> todoList = todoFacade.findByTodoDate(todoDate);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        MemberDetails principal = (MemberDetails) authentication.getPrincipal();
+        List<Todo> todoList = todoFacade.findByTodoDateAndCreatedBy(todoDate, principal.getMember().getEmail());
 
         Map<String, Object> response = new HashMap<>();
         response.put("message", "success");

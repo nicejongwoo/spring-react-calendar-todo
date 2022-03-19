@@ -70,4 +70,9 @@ public class TodoServiceImpl implements TodoService {
     public List<Todo> findAllMonthlyByEmail(String startDate, String endDate, String email) {
         return todoRepository.findAllByTodoDateBetweenAndCreatedBy(startDate, endDate, email);
     }
+
+    @Override
+    public List<Todo> findAllByTodoDateAndEmail(String todoDate, String email) {
+        return todoRepository.findByTodoDateAndCreatedBy(todoDate, email);
+    }
 }

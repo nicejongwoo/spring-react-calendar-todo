@@ -145,6 +145,35 @@ class TodoRepositoryTest {
         assertThat(selectedTodoList.size()).isLessThan(totalTodoList.size());
     }
 
+    @DisplayName("repository test: 선택된 날짜(하루)에 해당하는 특정 유저의 투두 목록 조회")
+    @Test
+    void givenTodoListEmail_whenFindAllByTodoDate_thenTodoListSelectedDate(){
+        //given - precondition ro setup
+        String todoDate = "2022-01-31";
+        Todo todo1 = Todo.builder()
+            .title("test todo1")
+            .todoDate(todoDate)
+            .build();
+
+        Todo todo2 = Todo.builder()
+            .title("test todo2")
+            .todoDate(todoDate)
+            .build();
+
+        todo1.setCreatedBy("test@email.com");
+        todo2.setCreatedBy("another@email.com");
+
+        todoRepository.save(todo1);
+        todoRepository.save(todo2);
+
+        //when - action or the behaviour that we are going test
+        List<Todo> selectedTodoList = todoRepository.findByTodoDateAndCreatedBy(todoDate, "test@email.com");
+
+        //then - verify the output
+        assertThat(selectedTodoList).isNotNull();
+        assertThat(selectedTodoList.size()).isEqualTo(1);
+    }
+
 
     @DisplayName("repository test: 투두토큰으로 조회")
     @Test

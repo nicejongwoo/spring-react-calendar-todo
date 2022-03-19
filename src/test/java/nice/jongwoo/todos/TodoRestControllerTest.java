@@ -81,18 +81,6 @@ class TodoRestControllerTest extends CommonRestControllerMock {
             .willReturn(new MemberDetails(memberObject, List.of(new SimpleGrantedAuthority("ROLE_USER"))));
     }
 
-//    @BeforeEach
-//    void setUp() {
-//
-//        MemberRequest request = new MemberRequest();
-//        request.setEmail("test@email.com");
-//        request.setUserName("tester");
-//        request.setPassword(passwordEncoder.encode("123"));
-//
-//        Member memberObject = MemberRequest.toEntity(request);
-//        member = memberService.registerMember(memberObject);
-//    }
-
     @DisplayName("controller test: 투두 등록")
     @Test
     void givenTodoObject_whenRegisterTodo_thenReturnSavedTodoToken() throws Exception {
@@ -192,6 +180,36 @@ class TodoRestControllerTest extends CommonRestControllerMock {
         response.andDo(print())
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.size()", is(todoList.size())))
+        ;
+    }
+
+    @WithUserDetails(value = "tester", userDetailsServiceBeanName = "authUserDetailsService")
+    @DisplayName("controller test: 선택된 날짜에 해당하는 특정 유저의 투두 목록 조회")
+    @Test
+    void givenTodoListEmail_whenFindAllByTodoDate_thenTodoListSelectedDate() throws Exception {
+        //given - precondition ro setup
+        List<Todo> todoList = new ArrayList<>();
+        String email = "test@email.com";
+
+        Todo todo1 = Todo.builder().title("test1").todoDate(TODO_DATE_2022_01_31).build();
+        Todo todo2 = Todo.builder().title("test2").todoDate(TODO_DATE_2022_01_31).build();
+
+        todo1.setCreatedBy(email);
+        todo2.setCreatedBy(email);
+
+        todoList.add(todo1);
+        todoList.add(todo2);
+
+        given(todoFacade.findByTodoDateAndCreatedBy(TODO_DATE_2022_01_31, email)).willReturn(todoList);
+
+        //when - action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/api/v1/todos/{todoDate}", TODO_DATE_2022_01_31));
+
+        //then - verify the output
+        verify(todoFacade, times(1)).findByTodoDateAndCreatedBy(TODO_DATE_2022_01_31, email);
+        response.andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.todos", hasSize(2)))
         ;
     }
 

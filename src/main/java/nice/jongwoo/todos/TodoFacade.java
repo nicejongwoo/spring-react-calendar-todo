@@ -50,4 +50,8 @@ public class TodoFacade {
     public List<Todo> findAllMonthlyByEmail(String startDate, String endDate, String email) {
         return todoService.findAllMonthlyByEmail(startDate, endDate, email);
     }
+
+    public List<Todo> findByTodoDateAndCreatedBy(String todoDate, String email) {
+        return todoService.findAllByTodoDateAndEmail(todoDate, email);
+    }
 }
