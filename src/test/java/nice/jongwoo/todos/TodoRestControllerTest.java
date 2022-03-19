@@ -1,6 +1,11 @@
 package nice.jongwoo.todos;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import nice.jongwoo.config.AuthUserDetailsService;
+import nice.jongwoo.member.Member;
+import nice.jongwoo.member.MemberDetails;
+import nice.jongwoo.member.MemberRequest;
+import nice.jongwoo.member.MemberServiceImpl;
 import nice.jongwoo.util.CommonRestControllerMock;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,18 +14,30 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -40,8 +57,41 @@ class TodoRestControllerTest extends CommonRestControllerMock {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @MockBean
+    private MemberServiceImpl memberService;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     private final String TITLE = "test";
     private final String TODO_DATE_2022_01_31 = "2022-01-31";
+
+    @MockBean(name = "authUserDetailsService")
+    private AuthUserDetailsService authUserDetailsService;
+
+    @PostConstruct
+    void setUp() {
+        MemberRequest request = new MemberRequest();
+        request.setEmail("test@email.com");
+        request.setUserName("tester");
+        request.setPassword(passwordEncoder.encode("123"));
+
+        Member memberObject = MemberRequest.toEntity(request);
+        given(authUserDetailsService.loadUserByUsername(anyString()))
+            .willReturn(new MemberDetails(memberObject, List.of(new SimpleGrantedAuthority("ROLE_USER"))));
+    }
+
+//    @BeforeEach
+//    void setUp() {
+//
+//        MemberRequest request = new MemberRequest();
+//        request.setEmail("test@email.com");
+//        request.setUserName("tester");
+//        request.setPassword(passwordEncoder.encode("123"));
+//
+//        Member memberObject = MemberRequest.toEntity(request);
+//        member = memberService.registerMember(memberObject);
+//    }
 
     @DisplayName("controller test: 투두 등록")
     @Test
@@ -67,23 +117,63 @@ class TodoRestControllerTest extends CommonRestControllerMock {
         ;
     }
 
-    @DisplayName("controller test: 선택된 달에 해당하는 투두 목록 조회")
+//    @DisplayName("controller test: 선택된 달에 해당하는 모든 투두 목록 조회")
+//    @Test
+//    void givenTodoList_whenFindAllByMonthly_thenTodoListSelectedMonth() throws Exception {
+//        //given - precondition ro setup
+//        List<Todo> todoList = new ArrayList<>();
+//        todoList.add(Todo.builder().title("test1").todoDate(TODO_DATE_2022_01_31).build());
+//        todoList.add(Todo.builder().title("test2").todoDate(TODO_DATE_2022_01_31).build());
+//        given(todoFacade.findAllMonthly("2022-01-01", "2022-01-31")).willReturn(todoList);
+//
+//        //when - action or the behaviour that we are going test
+//        ResultActions response = mockMvc.perform(get("/api/v1/todos?startDate=2022-01-31&endDate=2022-01-31"));
+//
+//        //then - verify the output
+//        response.andDo(print())
+//            .andExpect(status().isOk())
+//            .andExpect(jsonPath("$.size()", is(todoList.size())))
+//        ;
+//    }
+
+    /*
+     * @WithUserDetailse 참조
+     * https://stackoverflow.com/questions/63419621/spring-boot-webmvctest-how-to-test-controller-method-with-authentication-object
+     */
+    @WithUserDetails(value = "tester", userDetailsServiceBeanName = "authUserDetailsService")
+    @DisplayName("controller test: 선택된 달의 특정 사용자의 투두 목록 조회")
     @Test
-    void givenTodoList_whenFindAllByMonthly_thenTodoListSelectedMonth() throws Exception {
+    void givenTodoListEmail_whenFindAllByMonthly_thenTodoListSelectedMonth() throws Exception {
         //given - precondition ro setup
+        String startDate = "2022-01-01";
+        String endDate = "2022-01-31";
+        String email = "test@email.com";
         List<Todo> todoList = new ArrayList<>();
-        todoList.add(Todo.builder().title("test1").todoDate(TODO_DATE_2022_01_31).build());
-        todoList.add(Todo.builder().title("test2").todoDate(TODO_DATE_2022_01_31).build());
-        given(todoFacade.findAllMonthly("2022-01-01", "2022-01-31")).willReturn(todoList);
+
+        Todo test1 =
+            Todo.builder().title("test1").todoDate(TODO_DATE_2022_01_31).build();
+        test1.setCreatedBy(email);
+
+        Todo test2 =
+            Todo.builder().title("test2").todoDate(TODO_DATE_2022_01_31).build();
+        test2.setCreatedBy("another@email.com");
+
+        todoList.add(test1);
+
+        given(todoFacade.findAllMonthlyByEmail(startDate, endDate, email)).willReturn(todoList);
 
         //when - action or the behaviour that we are going test
-        ResultActions response = mockMvc.perform(get("/api/v1/todos?startDate=2022-01-31&endDate=2022-01-31"));
+        ResultActions response = mockMvc
+            .perform(get("/api/v1/todos?startDate="+startDate+"&endDate="+endDate));
 
         //then - verify the output
+        verify(todoFacade, times(1)).findAllMonthlyByEmail(startDate, endDate, email);
+
         response.andDo(print())
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.size()", is(todoList.size())))
+            .andExpect(jsonPath("$.todos", hasSize(1)))
         ;
+
     }
 
     @DisplayName("controller test: 선택된 날짜에 해당하는 투두 목록 조회")

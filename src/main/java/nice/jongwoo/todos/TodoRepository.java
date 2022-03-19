@@ -14,4 +14,6 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
 
     @Query(value = "select * from todo t where t.todo_date between :startDate and :endDate", nativeQuery = true)
     List<Todo> findAllByTodoDateBetweenStartDateAndEndDate(@Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    List<Todo> findAllByTodoDateBetweenAndCreatedBy(String startDate, String endDate, String email);
 }

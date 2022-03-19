@@ -2,7 +2,11 @@ package nice.jongwoo.todos;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import nice.jongwoo.member.MemberDetails;
+import nice.jongwoo.member.MemberService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,6 +23,7 @@ import java.util.Map;
 public class TodoRestController {
 
     private final TodoFacade todoFacade;
+    private final MemberService memberService;
 
     //C
     @PostMapping("")
@@ -37,7 +42,9 @@ public class TodoRestController {
     @GetMapping("")
     public ResponseEntity<?> getTodoListMonthly(@RequestParam String startDate,
                                                 @RequestParam String endDate) {
-        List<Todo> todoList = todoFacade.findAllMonthly(startDate, endDate);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        MemberDetails principal = (MemberDetails) authentication.getPrincipal();
+        List<Todo> todoList = todoFacade.findAllMonthlyByEmail(startDate, endDate, principal.getMember().getEmail());
 
         Map<String, Object> response = new HashMap<>();
         response.put("message", "success");

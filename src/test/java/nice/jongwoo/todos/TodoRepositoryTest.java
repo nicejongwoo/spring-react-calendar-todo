@@ -70,6 +70,47 @@ class TodoRepositoryTest {
         assertThat(todoList.size()).isEqualTo(2);
     }
 
+    @DisplayName("repository test: 유저의 선택된 달에 투두 목록 조회")
+    @Test
+    void givenTodoListAndEmail_whenFindAllMonthly_thenTodoListSelectedMonth(){
+        //given - precondition ro setup
+        String todoDate = "2022-01-31";
+        String email = "tester@email.com";
+        String anotherEmail = "another@email.com";
+
+        Todo todo1 = Todo.builder()
+            .title("test todo1")
+            .todoDate(todoDate)
+            .build();
+
+        Todo todo2 = Todo.builder()
+            .title("test todo2")
+            .todoDate(todoDate)
+            .build();
+
+        Todo todo3 = Todo.builder()
+            .title("test todo3")
+            .todoDate("2022-02-01")
+            .build();
+
+        todo1.setCreatedBy(email);
+        todo2.setCreatedBy(anotherEmail);
+        todo3.setCreatedBy(anotherEmail);
+
+        todoRepository.save(todo1);
+        todoRepository.save(todo2);
+        todoRepository.save(todo3);
+
+        //when - action or the behaviour that we are going test
+        String startDate = "2022-01-01";
+        String endDate = "2022-01-31";
+        List<Todo> todoList = todoRepository.findAllByTodoDateBetweenAndCreatedBy(startDate, endDate, email);
+
+        //then - verify the output
+        assertThat(todoList).isNotNull();
+        assertThat(todoList.size()).isEqualTo(1);
+    }
+
     @DisplayName("repository test: 선택된 날짜에 해당하는 투두 목록 조회")
     @Test
     void givenTodoList_whenFindAllByTodoDate_thenTodoListSelectedDate(){
