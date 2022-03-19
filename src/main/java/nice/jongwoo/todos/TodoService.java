@@ -19,4 +19,8 @@ public interface TodoService {
     void deleteByTodoToken(String todoToken);
 
     List<Todo> findAllMonthly(String startDate, String endDate);
+
+    List<Todo> findAllMonthlyByEmail(String startDate, String endDate, String email);
+
+    List<Todo> findAllByTodoDateAndEmail(String todoDate, String email);
 }
