@@ -5,7 +5,7 @@ export default function Alert() {
         <ToastContainer
             position="bottom-center"
             hideProgressBar={true}
-            autoClose={false}
+            autoClose={3000}
             newestOnTop={false}
             rtl={false}
             pauseOnFocusLoss

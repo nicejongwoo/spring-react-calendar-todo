@@ -64,7 +64,10 @@ function AppRouter () {
 
     return (
         <div>
-            <TopMenu state={state} handleLogout={handleLogout} />
+            <div className="mb-5 shadow">
+                <TopMenu state={state} handleLogout={handleLogout} />
+            </div>
+            
             <div className="container">
                 <Routes>
                     <Route path="/" exact element={<HomePage/>} />

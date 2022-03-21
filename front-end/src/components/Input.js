@@ -17,6 +17,7 @@ export default function Input (props) {
                 className={inputClassName}
                 placeholder={props.placeholder}
                 id={props.id}
+                autoFocus={props.autofocus}
             />
 
             <label htmlFor={props.id}>{props.label}{props.isRequired && <span className='required-field'>*</span>} : </label>

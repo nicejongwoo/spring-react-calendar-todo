@@ -55,6 +55,7 @@ function TodoForm({ clickedEvent, completeSave, accessToken }) {
                             className={`form-control form-control-sm ${errors.title ? 'is-invalid' : ''}`}
                             placeholder="예시) Learn Spring and React"
                             id="title"
+                            autoFocus
                         />
                         <label htmlFor="title">title<span className="required-field">*</span> : </label>
                         {errors.title && <span className="invalid-feedback text-start">{errors.title}</span>}
