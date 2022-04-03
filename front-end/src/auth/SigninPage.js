@@ -48,7 +48,7 @@ function Signin ({ getToken }) {
                         hasError={errors.email && true}
                         error={errors.email}
                         isRequired={true}
-                        autofocus
+                        autofocus={true}
                     />
                 </div>
                 <div className="col-12 mb-3">

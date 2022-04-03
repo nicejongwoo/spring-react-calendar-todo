@@ -9,7 +9,8 @@ export default function TopMenu ({ state, handleLogout }) {
         <div className="navbar navbar-expand-md navbar-dark bd-navbar bg-dark">
             <nav className="container-xxl flex-wrap flex-md-nowrap">
                 <Link to="/" className="navbar-brand p-0 me-2">
-                    <img src={logo} width="32" height="32" className="d-block my-1"/>
+                    {/* <img src={logo} width="32" height="32" className="d-block my-1"/> */}
+                    CALENDAR TODO APP
                 </Link>
 
                 <div className="collapse navbar-collapse">
