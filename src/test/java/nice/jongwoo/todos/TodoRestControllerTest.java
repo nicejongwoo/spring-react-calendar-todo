@@ -164,6 +164,7 @@ class TodoRestControllerTest extends CommonRestControllerMock {
 
     }
 
+    @WithUserDetails(value = "tester", userDetailsServiceBeanName = "authUserDetailsService")
     @DisplayName("controller test: 선택된 날짜에 해당하는 투두 목록 조회")
     @Test
     void givenTodoList_whenFindAllByTodoDate_thenTodoListSelectedDate() throws Exception {
