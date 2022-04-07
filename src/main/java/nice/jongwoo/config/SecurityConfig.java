@@ -2,11 +2,13 @@ package nice.jongwoo.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -43,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
             .antMatchers("/api/v1/auth/**", "/h2-console/**").permitAll()
             .antMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
+            .antMatchers("/**").permitAll()
             .anyRequest().authenticated()
             ;
 //            .antMatchers("/api/v1/todos**").authenticated()
@@ -54,6 +57,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             UsernamePasswordAuthenticationFilter.class
         );
 
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
+            .mvcMatchers("/static/**", "/template/**", "/public/**")
+            .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
     @Bean
