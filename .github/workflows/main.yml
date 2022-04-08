@@ -32,16 +32,10 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-      
+
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
-        
-      - name: Check the version of java, node, npm
-        run: 
-          javac -version
-          node --version
-          npm -version
-        
+
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
@@ -52,10 +46,10 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Build Maven Project
         run: mvn -B package --file pom.xml
-        
+
       - name: List the current directory
         run: ls -a
-        
+
       - name: What is in the target folder?
         run:
           cd target

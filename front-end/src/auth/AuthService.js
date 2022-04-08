@@ -1,4 +1,3 @@
-import { toast } from "react-toastify";
 import Cookies from "universal-cookie";
 import { API_BASE_URL, headers, request } from "../services/RequestService";
 

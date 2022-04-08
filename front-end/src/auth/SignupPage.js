@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Alert from "../components/Alert";
 import ButtonWithProgress from "../components/ButtonWithProgess";
 import Input from "../components/Input";
 import { signup } from "./AuthService";
