@@ -36,6 +36,14 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
 
+      - name: front-end install
+        run:
+          cd front-end
+          npm ci
+
+      - name: front-end build
+        run: npm run build --if-present
+
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
