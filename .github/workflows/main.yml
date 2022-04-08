@@ -57,6 +57,5 @@ jobs:
         run: ls -a
 
       - name: What is in the target folder?
-        run:
-          cd target
-          ls -a
+        working-directory: ./target
+        run: ls -a
