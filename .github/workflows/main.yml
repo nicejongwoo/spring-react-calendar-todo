@@ -36,17 +36,11 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
 
-      - name: Check the folder
-        run: ls -a
-
-      - name: cd front-end folder
-        run: cd "front-end"
-
-      - name: Install front-end
-        run: npm install
-
-      - name: front-end build
-        run: npm run build --if-present
+      - name: Install and Build Front-end
+        working-directory: ./front-end
+        run:
+          npm install
+          npm run build --if-present
 
 #      - name: Cache Maven packages
 #        uses: actions/cache@v3
