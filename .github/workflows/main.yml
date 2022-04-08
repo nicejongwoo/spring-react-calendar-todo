@@ -38,7 +38,7 @@ jobs:
 
       - name: front-end install
         run:
-          cd front-end
+          cd "front-end"
           npm ci
 
       - name: front-end build
