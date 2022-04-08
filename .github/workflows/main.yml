@@ -43,7 +43,7 @@ jobs:
         run: cd "front-end"
 
       - name: Install front-end
-        run: npm ci
+        run: npm install
 
       - name: front-end build
         run: npm run build --if-present
