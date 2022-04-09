@@ -61,5 +61,5 @@ jobs:
           port: ${{ secrets.PORT }}
           timeout: 40s
           script: |
-            java -jar target/ROOT.jar -Dspring.profiles.action=dev
+            java -jar ~/build/target/ROOT.jar -Dspring.profiles.action=dev
 
