@@ -70,10 +70,10 @@ jobs:
       - name: Connection test for ssh linux server
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secret.HOST }}
-          username: ${{ secret.USERNAME }}
-          password: ${{ secret.PASSWORD }}
-          port: ${{ secret.PORT }}
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
           timeout: 40s
           script: |
             echo "TEST NICE"
