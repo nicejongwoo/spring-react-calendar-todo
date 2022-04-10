@@ -48,6 +48,10 @@ jobs:
         working-directory: ./target
         run: ls -a
 
+      - name: What is in the source output folder?
+        working-directory: ./target/classes
+        run: ls -a
+
 #      - name: Copy file via ssh password
 #        uses: appleboy/scp-action@master
 #        with:
