@@ -56,15 +56,15 @@ jobs:
         working-directory: ./target/classes
         run: ls -a
 
-#      - name: Copy file via ssh password
-#        uses: appleboy/scp-action@master
-#        with:
-#          host: ${{ secrets.HOST }}
-#          username: ${{ secrets.USERNAME }}
-#          password: ${{ secrets.PASSWORD }}
-#          port: ${{ secrets.PORT }}
-#          source: './target/ROOT.jar'
-#          target: '~/build'
+      - name: Copy file via ssh password
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          source: './target/ROOT.jar'
+          target: '~/build'
 
 #      - name: Excuting remote ssh commands using password
 #        uses: appleboy/ssh-action@master
