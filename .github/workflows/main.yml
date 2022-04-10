@@ -27,10 +27,11 @@ jobs:
 
       - name: Install Front-end
         working-directory: ./front-end
-        run: |
-          npm install
-          npm run build --if-present
-          ls -a
+        run: npm install
+
+      - name: Build Front-end
+        working-directory: ./front-end
+        run: npm run build --if-present
 
       - name: Cache Maven packages
         uses: actions/cache@v3
