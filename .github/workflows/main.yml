@@ -63,7 +63,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          source: './ROOT.jar'
+          source: './target/ROOT.jar'
           target: '~/app/nonstop/build/libs'
 
 #      - name: Excuting remote ssh commands using password
