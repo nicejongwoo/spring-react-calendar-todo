@@ -63,8 +63,8 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          source: './target/ROOT.jar'
-          target: '~/build'
+          source: './ROOT.jar'
+          target: '~/app/nonstop/build/libs'
 
 #      - name: Excuting remote ssh commands using password
 #        uses: appleboy/ssh-action@master
