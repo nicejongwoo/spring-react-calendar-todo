@@ -13,9 +13,9 @@ function useForm({ initialValues, onSubmit, validate, clickedDate }){
     }
 
     const handleSubmit = async (event) => {
-        console.log('handleSubmit 시작')
+        //console.log('handleSubmit 시작')
         setSubmitting(true)
-        const { name } = event.target
+        //const { name } = event.target
 
         event.preventDefault()
 
@@ -24,7 +24,7 @@ function useForm({ initialValues, onSubmit, validate, clickedDate }){
         }) //<-이부분 문법 공부필요
 
         setErrors(validate(values))
-        console.log('handleSubmit 종료')
+        //console.log('handleSubmit 종료')
     }
 
     useEffect(() => { //<-이부분 문법 공부필요

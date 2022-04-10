@@ -1,5 +1,5 @@
 import { useEffect, useReducer } from "react";
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom"
+import { Routes, Route, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify";
 import AuthReducer from "../auth/AuthReducer";
 import { signout } from "../auth/AuthService";
