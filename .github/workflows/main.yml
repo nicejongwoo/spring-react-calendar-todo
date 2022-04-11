@@ -65,6 +65,7 @@ jobs:
           port: ${{ secrets.PORT }}
           source: './target/*.jar'
           target: '~/app/nonstop/build'
+          strip_components: 1
 
       - name: Copy deploy script file to server
         uses: appleboy/scp-action@master
@@ -75,6 +76,7 @@ jobs:
           port: ${{ secrets.PORT }}
           source: './script/*.sh'
           target: '~/app/nonstop'
+          strip_components: 1
 
       - name: Excuting chmod for write at script file and deploy.sh
         uses: appleboy/ssh-action@master
