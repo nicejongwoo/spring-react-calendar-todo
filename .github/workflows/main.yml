@@ -63,7 +63,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          source: './*.jar'
+          source: './target/*.jar'
           target: '~/app/nonstop/build'
 
       - name: Copy deploy script file to server
@@ -73,7 +73,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          source: './*.sh'
+          source: './script/*.sh'
           target: '~/app/nonstop'
 
       - name: Excuting chmod for write at script file and deploy.sh

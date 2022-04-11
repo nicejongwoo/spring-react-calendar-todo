@@ -178,25 +178,25 @@
                         </configuration>
                     </execution>
                     <!--copy script to target-->
-                    <execution>
-                        <id>copy script to target</id>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <phase>prepare-package</phase>
-                        <configuration>
-                            <outputDirectory>${basedir}/target</outputDirectory>
-                            <encoding>UTF-8</encoding>
-                            <resources>
-                                <resource>
-                                    <directory>${basedir}/script</directory>
-                                    <includes>
-                                        <include>**/*.sh</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
+<!--                    <execution>-->
+<!--                        <id>copy script to target</id>-->
+<!--                        <goals>-->
+<!--                            <goal>copy-resources</goal>-->
+<!--                        </goals>-->
+<!--                        <phase>prepare-package</phase>-->
+<!--                        <configuration>-->
+<!--                            <outputDirectory>${basedir}/target</outputDirectory>-->
+<!--                            <encoding>UTF-8</encoding>-->
+<!--                            <resources>-->
+<!--                                <resource>-->
+<!--                                    <directory>${basedir}/script</directory>-->
+<!--                                    <includes>-->
+<!--                                        <include>**/*.sh</include>-->
+<!--                                    </includes>-->
+<!--                                </resource>-->
+<!--                            </resources>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
 
                 </executions>
             </plugin>
