@@ -29,3 +29,7 @@ logging:
     org:
       hibernate:
         SQL: DEBUG
+    nice: DEBUG
+  file:
+    name: ~/app/nonstop/log
+

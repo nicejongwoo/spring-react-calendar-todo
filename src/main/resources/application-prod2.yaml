@@ -1,4 +1,3 @@
-
 server:
   port: 8082
 
@@ -9,12 +8,12 @@ spring:
     username: calendartodo
     password: calendartodo2022!
     driver-class-name: com.mysql.cj.jdbc.Driver
-#    driver-class-name: org.h2.Driver
+    #    driver-class-name: org.h2.Driver
     # Initialize the datasource with available DDL and DML scripts
     initialization-mode: NEVER
 
-## hibernate properties
-# The SQL dialect makes Hibernate generate better SQL for the chosen database
+  ## hibernate properties
+  # The SQL dialect makes Hibernate generate better SQL for the chosen database
   jpa:
     properties:
       hibernate:
@@ -29,3 +28,6 @@ logging:
     org:
       hibernate:
         SQL: DEBUG
+    nice: DEBUG
+  file:
+    name: ~/app/nonstop/log
