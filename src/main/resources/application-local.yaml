@@ -1,4 +1,6 @@
 
+server:
+  port: 80
 
 ## spring datasource
 spring:
