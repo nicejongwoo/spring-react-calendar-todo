@@ -4,17 +4,14 @@ server:
 
 ## spring datasource
 spring:
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
   datasource:
-    url: jdbc:h2:mem:testdb
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    url: jdbc:mysql://localhost:3306/calendartodo?useSSL=false&useLegacyDateTimeCode=false&serverTimezone=Asia/Seoul
+    username: calendartodo
+    password: calendartodo2022!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#    driver-class-name: org.h2.Driver
     # Initialize the datasource with available DDL and DML scripts
-    initialization-mode: always
+    initialization-mode: NEVER
 
 ## hibernate properties
 # The SQL dialect makes Hibernate generate better SQL for the chosen database
@@ -22,13 +19,17 @@ spring:
     properties:
       hibernate:
         # The SQL dialect makes Hibernate generate better SQL for the chosen database
-        dialect: org.hibernate.dialect.H2Dialect
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
-      ddl-auto: 'create-drop'
+      ddl-auto: 'update'
     defer-datasource-initialization: true # data.sql 초기화를 flyway 및 Liquibase 동작과 일치시킴
 ## Hibernate Logging
 logging:
   level:
     org:
       hibernate:
-        SQL: DEBUG
+        SQL: ERROR
+#    nice: DEBUG
+#  file:
+#    name: ~/app/nonstop/log
+
