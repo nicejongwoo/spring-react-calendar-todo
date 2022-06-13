@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //endpoint에 대한 권한
         http.authorizeRequests()
-            .antMatchers("/api/v1/auth/**", "/h2-console/**").permitAll()
+            .antMatchers("/api/v1/auth/**", "/h2-console/**", "/api/v1/health-check").permitAll()
             .antMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
             .antMatchers("/**").permitAll()
             .anyRequest().authenticated()
