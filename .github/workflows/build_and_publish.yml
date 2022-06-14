@@ -55,6 +55,8 @@ jobs:
   deploy:
     needs: build
     name: Deploy
+    permissions:
+      packages: read
     runs-on: [ self-hosted ]
     steps:
       - name: Login to Github Packages
