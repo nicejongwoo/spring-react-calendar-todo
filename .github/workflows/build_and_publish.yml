@@ -41,6 +41,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          file: ../../Dockerfile
           push: true
           tags: ${{ env.SERVER_IMAGE }}:latest
 
@@ -49,6 +51,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          file: ../../front-end/Dockerfile
           push: true
           tags: ${{ env.CLIENT_IMAGE }}:latest
 
