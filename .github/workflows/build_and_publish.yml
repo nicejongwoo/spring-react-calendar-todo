@@ -67,6 +67,6 @@ jobs:
           password: ${{ secrets.GHCR_TOKEN }}
       - name: Docker run
         run: |
-          docker stop ${{ env.SERVER_NAME }} ${{ env.CLIENT_NAME }} && docker rm ${{ env.SERVER_NAME }} ${{ env.CLIENT_NAME }} && docker rmi ${{ env.SERVER_IMAGE }} ${{ env.CLIENT_IMAGE }}
-          docker run -d -p 8080:8080 --name ${{ env.SERVER_NAME }} --restart always ${{ env.SERVER_IMAGE }}:latest
-          docker run -d -p 9090:80 --name ${{ env.CLIENT_NAME }} --restart always ${{ env.CLIENT_IMAGE }}:latest
+          sudo docker stop ${{ env.SERVER_NAME }} ${{ env.CLIENT_NAME }} && sudo docker rm ${{ env.SERVER_NAME }} ${{ env.CLIENT_NAME }} && sudo docker rmi ${{ env.SERVER_IMAGE }} ${{ env.CLIENT_IMAGE }}
+          sudo docker run -d -p 8080:8080 --name ${{ env.SERVER_NAME }} --restart always ${{ env.SERVER_IMAGE }}:latest
+          sudo docker run -d -p 9090:80 --name ${{ env.CLIENT_NAME }} --restart always ${{ env.CLIENT_IMAGE }}:latest
