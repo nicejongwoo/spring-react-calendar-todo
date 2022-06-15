@@ -42,7 +42,7 @@ jobs:
         with:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
-          file: ../../Dockerfile
+          file: ./Dockerfile
           push: true
           tags: ${{ env.SERVER_IMAGE }}:latest
 
@@ -52,7 +52,7 @@ jobs:
         with:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
-          file: ../../front-end/Dockerfile
+          file: ./front-end/Dockerfile
           push: true
           tags: ${{ env.CLIENT_IMAGE }}:latest
 
