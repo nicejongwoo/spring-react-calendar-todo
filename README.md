@@ -32,6 +32,6 @@ docker volume prune
 - http://localhost:9090
 ![Spring Petclinic Microservices screenshot](docs/todocalendar.png)
 
-**Architecture diagram of the Spring Petclinic Microservices**
+**Architecture diagram**
 ![Spring Petclinic Microservices screenshot](docs/github_actions_workflow.png)
 
